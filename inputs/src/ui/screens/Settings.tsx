@@ -6,11 +6,13 @@ import type { AppData } from '../../domain/types';
 import { addDays } from '../../domain/dates';
 import { backupFilename, parseBackup, serializeBackup } from '../../storage/backup';
 import { ValidationError } from '../../storage/schema';
+import { useAuth } from '../../state/auth';
 import { useStore } from '../../state/store';
 import { ConfirmDialog } from '../components/common';
 
 export function Settings() {
   const { data, replaceAll } = useStore();
+  const { account, logOut } = useAuth();
   const fileRef = useRef<HTMLInputElement>(null);
   const [pending, setPending] = useState<AppData | null>(null);
   const [restoreError, setRestoreError] = useState('');
@@ -55,6 +57,23 @@ export function Settings() {
   return (
     <div className="app-main">
       <h1 className="screen-title">Settings</h1>
+
+      {account ? (
+        <div className="card stack" style={{ marginBottom: 14 }}>
+          <div>
+            <h2 style={{ fontSize: 16 }}>Account</h2>
+            <p className="muted" style={{ fontSize: 14, marginTop: 4 }}>
+              Signed in as <strong>{account.email}</strong>. Your plans and habits are private to
+              this account, in this browser.
+            </p>
+          </div>
+          <div className="btn-row">
+            <button className="btn" onClick={logOut}>
+              Log out
+            </button>
+          </div>
+        </div>
+      ) : null}
 
       <div className="card stack">
         <div>

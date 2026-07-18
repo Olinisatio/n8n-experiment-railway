@@ -15,7 +15,7 @@ import {
   type ReactNode,
 } from 'react';
 import type { AppData } from '../domain/types';
-import { load, save } from '../storage/repository';
+import { loadData, saveData } from '../storage/repository';
 import { reducer, type Action } from './actions';
 
 interface StoreValue {
@@ -32,15 +32,24 @@ const StoreContext = createContext<StoreValue | null>(null);
 
 const UNDOABLE = new Set<Action['type']>(['setDone', 'setAmount']);
 
-export function StoreProvider({ children, initial }: { children: ReactNode; initial?: AppData }) {
-  const [data, rawDispatch] = useReducer(reducer, undefined, () => initial ?? load());
+export function StoreProvider({
+  children,
+  accountId,
+  initial,
+}: {
+  children: ReactNode;
+  /** Whose data to load and persist. Namespaces storage per account. */
+  accountId: string;
+  initial?: AppData;
+}) {
+  const [data, rawDispatch] = useReducer(reducer, undefined, () => initial ?? loadData(accountId));
   const undoRef = useRef<{ snapshot: AppData; label: string } | null>(null);
   const [undoLabel, setUndoLabel] = useState<string | null>(null);
 
-  // Persist on every change.
+  // Persist on every change, scoped to the active account.
   useEffect(() => {
-    save(data);
-  }, [data]);
+    saveData(accountId, data);
+  }, [accountId, data]);
 
   const dispatch = useCallback(
     (action: Action) => {
