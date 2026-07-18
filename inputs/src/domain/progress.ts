@@ -5,7 +5,7 @@
  * date they return numbers and labels. Progress is never capped at 100%: extra
  * work counts and can put a user ahead.
  */
-import { addDays, compareDate, eachDay, minDate, mondayOf } from './dates';
+import { addDays, compareDate, diffDays, eachDay, maxDate, minDate, mondayOf } from './dates';
 import { getEntry, isDayHit } from './entries';
 import { adjustedFrequencyGoal, adjustedWeeklyAmountGoal, goalForWeek } from './goals';
 import { activePlanDaysInWeek, planWeekMondays } from './plan';
@@ -96,13 +96,24 @@ function paceStatus(actual: number, due: number): PaceStatus {
   return 'on-track';
 }
 
+/** Active plan days in [from, to] inclusive, clipped to the plan's date range. */
+function activePlanDaysBetween(plan: Plan, from: ISODate, to: ISODate): number {
+  const start = maxDate(from, plan.startDate);
+  const end = minDate(to, plan.endDate);
+  const count = diffDays(start, end) + 1;
+  return count > 0 ? count : 0;
+}
+
 /**
  * Full-plan pace for one habit, measured from the plan start through `today`
  * (clamped to the plan end when the plan has finished).
  *
- * Target due sums each plan week's adjusted goal, including the whole current
- * calendar week's goal — it is not prorated again by the current weekday.
- * Actual sums every valid entry in the elapsed range. Neither side is capped.
+ * Target due accrues the goal at the pace it is earned: every fully-elapsed
+ * week counts its whole adjusted goal, and the current in-progress week counts
+ * only the fraction of its goal earned by the active days elapsed through
+ * today. So a habit kept up day-by-day reads "On track" rather than "Behind"
+ * just because the rest of the week has not happened yet. Actual sums every
+ * valid entry in the elapsed range. Neither side is capped.
  */
 export function fullPlanPace(
   plan: Plan,
@@ -115,9 +126,16 @@ export function fullPlanPace(
   let dueDaysHit = 0;
   let dueAmount = 0;
   for (const weekMonday of mondays) {
-    dueDaysHit += adjustedFrequencyGoal(plan, habit, weekMonday);
+    const weekSunday = addDays(weekMonday, 6);
+    // How far this week has actually progressed, clipped to the plan and today.
+    const weekThrough = minDate(minDate(weekSunday, plan.endDate), today);
+    const totalActive = activePlanDaysInWeek(plan, weekMonday);
+    const elapsedActive = activePlanDaysBetween(plan, weekMonday, weekThrough);
+    const fraction = totalActive > 0 ? elapsedActive / totalActive : 0;
+
+    dueDaysHit += adjustedFrequencyGoal(plan, habit, weekMonday) * fraction;
     if (habit.type !== 'done') {
-      dueAmount += adjustedWeeklyAmountGoal(plan, habit, weekMonday);
+      dueAmount += adjustedWeeklyAmountGoal(plan, habit, weekMonday) * fraction;
     }
   }
 

@@ -62,7 +62,7 @@ export function HabitStats({
         <span className="row" style={{ gap: 6 }}>
           <span className="faint">Plan</span>
           <span className="value" style={{ fontWeight: 600 }}>
-            {pace.daysHit.actual}/{pace.daysHit.due} days
+            {pace.daysHit.actual}/{Math.round(pace.daysHit.due)} days
           </span>
           <PaceBadge status={pace.daysHit.status} />
         </span>

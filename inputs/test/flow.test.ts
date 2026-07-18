@@ -79,10 +79,11 @@ describe('key user flow + past-day recalculation (rule 14)', () => {
     expect(wp.hitDays).toBe(2);
     expect(wp.amount?.actual).toBe(3500);
 
-    // Pace reflects the elapsed range (through 15 Jul) with the full current week due.
+    // Pace reflects the elapsed range (through Wed 15 Jul): 3 of 7 active days
+    // elapsed, so the current week's goal is prorated by 3/7.
     const pace = fullPlanPace(plan, cal, state.entries, '2026-07-15');
     expect(pace.daysHit.actual).toBe(2);
-    expect(pace.daysHit.due).toBe(7);
+    expect(pace.daysHit.due).toBeCloseTo(3, 6); // 7 * 3/7
     expect(pace.amount?.actual).toBe(3500);
 
     // Backup and restore round-trips the whole dataset.

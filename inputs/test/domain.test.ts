@@ -144,16 +144,43 @@ describe('weekly progress is uncapped (rule 9)', () => {
 });
 
 describe('full-plan pace (rule 8, 12)', () => {
-  it('target includes the whole current calendar-week goal, not prorated by weekday', () => {
+  it('prorates the current week by active days elapsed through today', () => {
+    // Product decision (overrides the original spec rule 8): the target due
+    // reflects the goal earned by today, not the whole in-progress week.
     const plan = makePlan('2026-07-13', '2026-08-16'); // full weeks
     const habit = makeHabit(plan, {
-      goalHistory: [{ effectiveMonday: '2026-07-13', weeklyFrequency: 4 }],
+      goalHistory: [{ effectiveMonday: '2026-07-13', weeklyFrequency: 7 }],
     });
-    // On Wed of week 1 (only 3 days elapsed) the due should still be the full 4.
-    const pace = fullPlanPace(plan, habit, {}, '2026-07-15');
-    expect(pace.daysHit.due).toBe(4);
-    expect(pace.daysHit.actual).toBe(0);
-    expect(pace.daysHit.status).toBe('behind');
+    // Wed of week 1: 3 of 7 active days elapsed → due = 7 * 3/7 = 3.
+    const nothing = fullPlanPace(plan, habit, {}, '2026-07-15');
+    expect(nothing.daysHit.due).toBeCloseTo(3, 6);
+    expect(nothing.daysHit.actual).toBe(0);
+    expect(nothing.daysHit.status).toBe('behind');
+
+    // Kept up each elapsed day → on track, not behind.
+    const e = entries(
+      { habitId: habit.id, date: '2026-07-13', done: true },
+      { habitId: habit.id, date: '2026-07-14', done: true },
+      { habitId: habit.id, date: '2026-07-15', done: true },
+    );
+    const keptUp = fullPlanPace(plan, habit, e, '2026-07-15');
+    expect(keptUp.daysHit.actual).toBe(3);
+    expect(keptUp.daysHit.status).toBe('on-track');
+  });
+
+  it('a habit started and done today reads on track, not behind', () => {
+    // The reported case: a plan opening on a Saturday (Sat+Sun partial week),
+    // done today, should not show "Behind".
+    const plan = makePlan('2026-07-18', '2026-09-30'); // Saturday start
+    const habit = makeHabit(plan, {
+      goalHistory: [{ effectiveMonday: '2026-07-13', weeklyFrequency: 7 }],
+    });
+    const e = entries({ habitId: habit.id, date: '2026-07-18', done: true });
+    const pace = fullPlanPace(plan, habit, e, '2026-07-18');
+    // 1 of 2 active days elapsed; adjusted goal 2 → due = 2 * 1/2 = 1.
+    expect(pace.daysHit.due).toBeCloseTo(1, 6);
+    expect(pace.daysHit.actual).toBe(1);
+    expect(pace.daysHit.status).toBe('on-track');
   });
 
   it('reports both amount pace and days-hit pace for number habits', () => {
@@ -174,12 +201,13 @@ describe('full-plan pace (rule 8, 12)', () => {
       { habitId: habit.id, date: '2026-07-14', amount: 2000 },
     );
     const pace = fullPlanPace(plan, habit, e, '2026-07-14');
+    // Tue of week 1: 2 of 7 active days elapsed → due prorated by 2/7.
     expect(pace.daysHit.actual).toBe(2);
-    expect(pace.daysHit.due).toBe(7); // full current week
+    expect(pace.daysHit.due).toBeCloseTo(2, 6); // 7 * 2/7
     expect(pace.amount?.actual).toBe(3000);
-    expect(pace.amount?.due).toBe(7000);
-    expect(pace.amount?.status).toBe('behind');
-    expect(pace.daysHit.status).toBe('behind');
+    expect(pace.amount?.due).toBeCloseTo(2000, 6); // 7000 * 2/7
+    expect(pace.amount?.status).toBe('ahead'); // 3000 logged vs 2000 due
+    expect(pace.daysHit.status).toBe('on-track'); // 2 done vs 2 due
   });
 
   it('extra work can put a habit ahead', () => {
