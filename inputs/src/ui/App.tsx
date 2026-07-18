@@ -1,5 +1,6 @@
 /** App shell: navigation, routing, and the undo toast. */
 import { useState } from 'react';
+import { useAuth } from '../state/auth';
 import { useStore } from '../state/store';
 import { History } from './screens/History';
 import { PlanDetail } from './screens/PlanDetail';
@@ -20,6 +21,7 @@ const TABS: { key: Tab; label: string; icon: string }[] = [
 
 export function App() {
   const { canUndo, undo, undoLabel } = useStore();
+  const { account, logOut } = useAuth();
   const [route, setRoute] = useState<Route>({ name: 'today' });
   const activeTab: Tab =
     route.name === 'plan' || route.name === 'new-plan' ? 'plans' : (route.name as Tab);
@@ -31,6 +33,16 @@ export function App() {
           Inputs
           <small>Your life reflects your inputs.</small>
         </div>
+        {account ? (
+          <div className="account-badge">
+            <span className="account-email" title={account.email}>
+              {account.email}
+            </span>
+            <button className="btn ghost small" onClick={logOut}>
+              Switch account
+            </button>
+          </div>
+        ) : null}
       </div>
 
       {route.name === 'today' && <Today onNewPlan={() => setRoute({ name: 'new-plan' })} />}
