@@ -36,7 +36,7 @@ describe('App shell', () => {
     expect(screen.getByLabelText('Plan name')).toBeInTheDocument();
   });
 
-  it('creates a plan and logs a done habit on Today', async () => {
+  it('creates a plan and logs a done habit from the plan page', async () => {
     const user = userEvent.setup();
     renderApp();
     await user.click(screen.getByText('Create your first plan'));
@@ -48,8 +48,8 @@ describe('App shell', () => {
     await user.type(screen.getByLabelText('Habit name'), 'Meditate');
     await user.click(screen.getByRole('button', { name: 'Save plan' }));
 
-    // Land on Plans; open Today via the nav.
-    await user.click(screen.getByRole('button', { name: /Today/ }));
+    // Land on Plans; open the plan to log there (Today tab no longer exists).
+    await user.click(screen.getByRole('button', { name: 'My plan' }));
     const habitCard = screen.getByText('Meditate').closest('.card') as HTMLElement;
     const toggle = within(habitCard).getByRole('button', { name: 'Mark done' });
     await user.click(toggle);

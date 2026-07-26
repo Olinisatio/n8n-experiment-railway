@@ -71,7 +71,7 @@ export function History() {
 
       {groups.length === 0 ? (
         <div className="card muted" style={{ marginTop: 14 }}>
-          Nothing logged yet. Entries you save on Today will appear here.
+          Nothing logged yet. Entries you log on a plan will appear here.
         </div>
       ) : (
         <div style={{ marginTop: 8 }}>

@@ -1,30 +1,32 @@
 /** App shell: navigation, routing, and the undo toast. */
 import { useState } from 'react';
+import { todayISO } from '../domain/dates';
 import { useAuth } from '../state/auth';
+import { endedUnhandledPlans } from '../state/selectors';
 import { useStore } from '../state/store';
+import { EndedPlanPrompt } from './components/EndedPlanPrompt';
 import { History } from './screens/History';
 import { PlanDetail } from './screens/PlanDetail';
 import { PlanForm } from './screens/PlanForm';
 import { Plans } from './screens/Plans';
 import { Settings } from './screens/Settings';
-import { Today } from './screens/Today';
 
-type Tab = 'today' | 'plans' | 'history' | 'settings';
+type Tab = 'plans' | 'history' | 'settings';
 type Route = { name: Tab } | { name: 'new-plan' } | { name: 'plan'; id: string };
 
 const TABS: { key: Tab; label: string; icon: string }[] = [
-  { key: 'today', label: 'Today', icon: '◎' },
   { key: 'plans', label: 'Plans', icon: '▦' },
   { key: 'history', label: 'History', icon: '≣' },
   { key: 'settings', label: 'Settings', icon: '⚙' },
 ];
 
 export function App() {
-  const { canUndo, undo, undoLabel } = useStore();
+  const { data, canUndo, undo, undoLabel } = useStore();
   const { account, logOut } = useAuth();
-  const [route, setRoute] = useState<Route>({ name: 'today' });
+  const [route, setRoute] = useState<Route>({ name: 'plans' });
   const activeTab: Tab =
     route.name === 'plan' || route.name === 'new-plan' ? 'plans' : (route.name as Tab);
+  const endedPlan = endedUnhandledPlans(data, todayISO())[0];
 
   return (
     <div className="app">
@@ -45,7 +47,8 @@ export function App() {
         ) : null}
       </div>
 
-      {route.name === 'today' && <Today onNewPlan={() => setRoute({ name: 'new-plan' })} />}
+      {endedPlan ? <EndedPlanPrompt plan={endedPlan} /> : null}
+
       {route.name === 'plans' && (
         <Plans
           onNewPlan={() => setRoute({ name: 'new-plan' })}

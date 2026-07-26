@@ -47,7 +47,16 @@ export function Plans({
       </div>
 
       {plans.length === 0 ? (
-        <div className="card muted">No plans yet. Create one to get started.</div>
+        <div className="empty">
+          <div className="lead">Track what moves the needle.</div>
+          <p className="muted" style={{ maxWidth: 320 }}>
+            Create a plan, add a few daily habits, and log them in seconds each day.
+          </p>
+          <button className="btn primary" onClick={onNewPlan}>
+            Create your first plan
+          </button>
+          <p className="tagline">Your life reflects your inputs.</p>
+        </div>
       ) : (
         <div className="stack">
           {plans.map((plan) => {

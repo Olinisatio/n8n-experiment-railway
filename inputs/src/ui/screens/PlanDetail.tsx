@@ -6,6 +6,7 @@ import type { Habit } from '../../domain/types';
 import { habitsForPlan, planById, planStatus } from '../../state/selectors';
 import { useStore } from '../../state/store';
 import { ConfirmDialog } from '../components/common';
+import { HabitInput } from '../components/HabitInput';
 import { HabitModal } from '../components/HabitModal';
 import { HabitStats } from '../components/HabitStats';
 import { EditPlanModal } from '../components/PlanModals';
@@ -67,9 +68,16 @@ export function PlanDetail({ planId, onBack }: { planId: string; onBack: () => v
         </div>
       </div>
 
-      <h2 className="screen-title" style={{ fontSize: 18 }}>
-        Habits
-      </h2>
+      <div className="row spread" style={{ margin: '8px 2px 0', alignItems: 'baseline' }}>
+        <h2 className="screen-title" style={{ fontSize: 18, margin: 0 }}>
+          Habits
+        </h2>
+        {status === 'active' ? (
+          <span className="faint" style={{ fontSize: 13 }}>
+            Log for {formatLong(today)}
+          </span>
+        ) : null}
+      </div>
       {activeHabits.length === 0 ? (
         <div className="card muted">No habits yet. Add one to start tracking.</div>
       ) : (
@@ -102,6 +110,7 @@ export function PlanDetail({ planId, onBack }: { planId: string; onBack: () => v
                   </button>
                 </div>
               </div>
+              {status === 'active' ? <HabitInput habit={habit} date={today} /> : null}
               <HabitStats plan={plan} habit={habit} entries={data.entries} date={refDate} />
             </div>
           ))}
