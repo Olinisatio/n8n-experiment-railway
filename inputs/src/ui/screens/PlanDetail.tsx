@@ -9,6 +9,7 @@ import { ConfirmDialog } from '../components/common';
 import { HabitInput } from '../components/HabitInput';
 import { HabitModal } from '../components/HabitModal';
 import { HabitStats } from '../components/HabitStats';
+import { PastLogModal } from '../components/PastLogModal';
 import { EditPlanModal } from '../components/PlanModals';
 
 export function PlanDetail({ planId, onBack }: { planId: string; onBack: () => void }) {
@@ -19,6 +20,7 @@ export function PlanDetail({ planId, onBack }: { planId: string; onBack: () => v
   const [addOpen, setAddOpen] = useState(false);
   const [editHabit, setEditHabit] = useState<Habit | null>(null);
   const [deleteHabit, setDeleteHabit] = useState<Habit | null>(null);
+  const [pastHabit, setPastHabit] = useState<Habit | null>(null);
 
   if (!plan) {
     return (
@@ -86,7 +88,13 @@ export function PlanDetail({ planId, onBack }: { planId: string; onBack: () => v
             <div className="card habit" key={habit.id}>
               <div className="habit-head">
                 <div>
-                  <div className="habit-name">{habit.name}</div>
+                  <button
+                    className="habit-name-btn"
+                    onClick={() => setPastHabit(habit)}
+                    title="Add a past session"
+                  >
+                    {habit.name}
+                  </button>
                   <div className="habit-sub">
                     {habit.type === 'done'
                       ? 'Done / not done'
@@ -143,6 +151,9 @@ export function PlanDetail({ planId, onBack }: { planId: string; onBack: () => v
         </>
       ) : null}
 
+      {pastHabit ? (
+        <PastLogModal plan={plan} habit={pastHabit} onClose={() => setPastHabit(null)} />
+      ) : null}
       {editingPlan ? <EditPlanModal plan={plan} onClose={() => setEditingPlan(false)} /> : null}
       {addOpen ? <HabitModal planId={plan.id} onClose={() => setAddOpen(false)} /> : null}
       {editHabit ? (

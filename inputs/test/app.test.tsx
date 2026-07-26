@@ -58,6 +58,34 @@ describe('App shell', () => {
       'true',
     );
   });
+
+  it('back-fills a past session from the plan page', async () => {
+    const user = userEvent.setup();
+    renderApp();
+    await user.click(screen.getByText('Create your first plan'));
+
+    // A plan that started in the past so there are past dates to log.
+    await user.type(screen.getByLabelText('Plan name'), 'Ball practice');
+    await user.clear(screen.getByLabelText('Start (Day 1)'));
+    await user.type(screen.getByLabelText('Start (Day 1)'), '2026-07-01');
+    await user.clear(screen.getByLabelText('End date'));
+    await user.type(screen.getByLabelText('End date'), '2099-12-31');
+    await user.type(screen.getByLabelText('Habit name'), 'Shooting drills');
+    await user.click(screen.getByRole('button', { name: 'Save plan' }));
+
+    await user.click(screen.getByRole('button', { name: 'Ball practice' }));
+
+    // Click the habit name to open the "add a past session" modal.
+    await user.click(screen.getByRole('button', { name: 'Shooting drills' }));
+    const dialog = screen.getByRole('dialog');
+    const dateInput = within(dialog).getByLabelText('Date') as HTMLInputElement;
+    await user.clear(dateInput);
+    await user.type(dateInput, '2026-07-10');
+
+    // Log the past day as done, then close.
+    await user.click(within(dialog).getByRole('button', { name: 'Mark done' }));
+    expect(within(dialog).getByRole('button', { name: 'Done', pressed: true })).toBeInTheDocument();
+  });
 });
 
 describe('Auth gate', () => {
