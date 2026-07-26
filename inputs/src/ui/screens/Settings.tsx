@@ -12,7 +12,7 @@ import { ConfirmDialog } from '../components/common';
 
 export function Settings() {
   const { data, replaceAll } = useStore();
-  const { account, logOut } = useAuth();
+  const { account, logOut, synced } = useAuth();
   const fileRef = useRef<HTMLInputElement>(null);
   const [pending, setPending] = useState<AppData | null>(null);
   const [restoreError, setRestoreError] = useState('');
@@ -63,8 +63,10 @@ export function Settings() {
           <div>
             <h2 style={{ fontSize: 16 }}>Account</h2>
             <p className="muted" style={{ fontSize: 14, marginTop: 4 }}>
-              Signed in as <strong>{account.email}</strong>. Your plans and habits are private to
-              this account, in this browser.
+              Signed in as <strong>{account.email}</strong>.{' '}
+              {synced
+                ? 'Your plans and habits sync securely to the cloud and follow you across devices.'
+                : 'Your plans and habits are private to this account, in this browser.'}
             </p>
           </div>
           <div className="btn-row">

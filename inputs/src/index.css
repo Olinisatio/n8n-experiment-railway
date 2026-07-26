@@ -504,6 +504,23 @@ h3 {
   margin-top: 2px;
 }
 
+.form-notice {
+  color: var(--accent-text);
+  background: var(--accent-soft);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+.app-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  color: var(--text-faint);
+  font-size: 14px;
+}
+
 .error-input {
   border-color: var(--danger) !important;
 }

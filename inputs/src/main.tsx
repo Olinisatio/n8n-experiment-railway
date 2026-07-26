@@ -11,7 +11,8 @@ import { StoreProvider } from './state/store';
  * data) when the account changes. */
 // eslint-disable-next-line react-refresh/only-export-components -- entry file, not hot-reloaded.
 function Root() {
-  const { account } = useAuth();
+  const { account, loading } = useAuth();
+  if (loading) return <div className="app-loading">Loading…</div>;
   if (!account) return <AuthScreen />;
   return (
     <StoreProvider key={account.id} accountId={account.id}>
