@@ -10,7 +10,12 @@ import {
 } from '../src/domain/dates';
 import { adjustedFrequencyGoal } from '../src/domain/goals';
 import { activePlanDaysInWeek, planDayNumber, planWeekNumber } from '../src/domain/plan';
-import { fullPlanPace, weeklyProgress } from '../src/domain/progress';
+import {
+  fullPlanPace,
+  fullPlanSessionTarget,
+  sessionsDoneSoFar,
+  weeklyProgress,
+} from '../src/domain/progress';
 import { applyGoalChange, goalForWeek } from '../src/domain/goals';
 import { entries, makeHabit, makePlan } from './factories';
 
@@ -242,6 +247,40 @@ describe('goal versioning (rule 13)', () => {
     expect(goalForWeek(habit, '2026-07-13').weeklyFrequency).toBe(4); // past week unchanged
     expect(goalForWeek(habit, '2026-07-20').weeklyFrequency).toBe(6); // current week updated
     expect(goalForWeek(habit, '2026-07-27').weeklyFrequency).toBe(6); // future week updated
+  });
+});
+
+describe('whole-plan session target and completion', () => {
+  it('totals sessions across every full plan week (22 weeks × 3 = 66)', () => {
+    const start = '2026-07-13'; // Monday
+    const end = addDays(start, 22 * 7 - 1); // 22 full Mon–Sun weeks, inclusive
+    const plan = makePlan(start, end);
+    const habit = makeHabit(plan, {
+      goalHistory: [{ effectiveMonday: start, weeklyFrequency: 3 }],
+    });
+    expect(fullPlanSessionTarget(plan, habit)).toBe(66);
+  });
+
+  it('counts sessions done so far → 10/66 ≈ 15%', () => {
+    const start = '2026-07-13';
+    const end = addDays(start, 22 * 7 - 1);
+    const plan = makePlan(start, end);
+    const habit = makeHabit(plan, {
+      goalHistory: [{ effectiveMonday: start, weeklyFrequency: 3 }],
+    });
+    // 10 done days within the plan range.
+    const done = entries(
+      ...Array.from({ length: 10 }, (_, i) => ({
+        habitId: habit.id,
+        date: addDays(start, i),
+        done: true,
+      })),
+    );
+    const total = fullPlanSessionTarget(plan, habit);
+    const doneCount = sessionsDoneSoFar(plan, habit, done, end);
+    expect(doneCount).toBe(10);
+    expect(total).toBe(66);
+    expect(Math.round((doneCount / total) * 100)).toBe(15);
   });
 });
 

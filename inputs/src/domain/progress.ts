@@ -5,7 +5,16 @@
  * date they return numbers and labels. Progress is never capped at 100%: extra
  * work counts and can put a user ahead.
  */
-import { addDays, compareDate, diffDays, eachDay, maxDate, minDate, mondayOf } from './dates';
+import {
+  addDays,
+  compareDate,
+  diffDays,
+  eachDay,
+  eachWeekMonday,
+  maxDate,
+  minDate,
+  mondayOf,
+} from './dates';
 import { getEntry, isDayHit } from './entries';
 import { adjustedFrequencyGoal, adjustedWeeklyAmountGoal, goalForWeek } from './goals';
 import { activePlanDaysInWeek, planWeekMondays } from './plan';
@@ -174,3 +183,38 @@ export const PACE_LABELS: Record<PaceStatus, string> = {
   behind: 'Behind',
   'no-goal': 'No goal due',
 };
+
+/**
+ * Total frequency-goal "sessions" for the whole plan: every plan week's
+ * adjusted frequency goal, summed from the plan start through the plan end.
+ * Partial first/final weeks use the same floor proration as everywhere else,
+ * so this can be slightly below (weeks × frequency) when the plan starts or
+ * ends mid-week.
+ */
+export function fullPlanSessionTarget(plan: Plan, habit: Habit): number {
+  let total = 0;
+  for (const weekMonday of eachWeekMonday(plan.startDate, plan.endDate)) {
+    total += adjustedFrequencyGoal(plan, habit, weekMonday);
+  }
+  return total;
+}
+
+/**
+ * Count of "hit" days for a habit from the plan start through today (clamped to
+ * the plan end). This is the actual sessions done so far.
+ */
+export function sessionsDoneSoFar(
+  plan: Plan,
+  habit: Habit,
+  entries: EntryMap,
+  today: ISODate,
+): number {
+  const end = minDate(today, plan.endDate);
+  if (compareDate(end, plan.startDate) < 0) return 0;
+  let count = 0;
+  for (const day of eachDay(plan.startDate, end)) {
+    const goal = goalForWeek(habit, mondayOf(day));
+    if (isDayHit(habit, getEntry(entries, habit.id, day), goal)) count++;
+  }
+  return count;
+}

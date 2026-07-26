@@ -3,7 +3,13 @@
 import { useState } from 'react';
 import { formatShort, todayISO } from '../../domain/dates';
 import type { Plan } from '../../domain/types';
-import { habitsForPlan, planStatus, sortedPlans, type PlanStatus } from '../../state/selectors';
+import {
+  habitsForPlan,
+  planSessionSummary,
+  planStatus,
+  sortedPlans,
+  type PlanStatus,
+} from '../../state/selectors';
 import { useStore } from '../../state/store';
 import { ConfirmDialog } from '../components/common';
 import { CopyPlanModal, EditPlanModal } from '../components/PlanModals';
@@ -47,6 +53,7 @@ export function Plans({
           {plans.map((plan) => {
             const status = planStatus(plan, today);
             const habitCount = habitsForPlan(data, plan.id).length;
+            const summary = planSessionSummary(data, plan, today);
             return (
               <div className="card stack" key={plan.id} style={{ gap: 10 }}>
                 <div className="row spread">
@@ -65,9 +72,19 @@ export function Plans({
                   </button>
                   <span className={`chip status-${status}`}>{STATUS_LABEL[status]}</span>
                 </div>
-                <div className="faint" style={{ fontSize: 13 }}>
-                  {formatShort(plan.startDate)} – {formatShort(plan.endDate)} · {habitCount} habit
-                  {habitCount === 1 ? '' : 's'}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <div className="faint" style={{ fontSize: 13 }}>
+                    {formatShort(plan.startDate)} – {formatShort(plan.endDate)} · {habitCount} habit
+                    {habitCount === 1 ? '' : 's'}
+                  </div>
+                  {summary.pct !== null ? (
+                    <div style={{ fontSize: 13 }}>
+                      <span className="value" style={{ fontWeight: 600 }}>
+                        {summary.done}/{summary.total} sessions
+                      </span>{' '}
+                      <span className="muted">· {Math.round(summary.pct)}% of plan</span>
+                    </div>
+                  ) : null}
                 </div>
                 <div className="btn-row">
                   <button className="btn small" onClick={() => onOpenPlan(plan.id)}>

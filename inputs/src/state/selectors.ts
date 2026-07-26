@@ -1,6 +1,7 @@
 /** Pure derived views over AppData for the UI. */
 import { compareDate } from '../domain/dates';
 import { hasPlanEnded, hasPlanStarted, isDateInPlan } from '../domain/plan';
+import { fullPlanSessionTarget, sessionsDoneSoFar } from '../domain/progress';
 import type { AppData, Habit, ISODate, Plan } from '../domain/types';
 
 export type PlanStatus = 'future' | 'active' | 'ended' | 'archived';
@@ -21,6 +22,31 @@ export function activePlans(data: AppData, today: ISODate): Plan[] {
 
 export function habitsForPlan(data: AppData, planId: string, includeArchived = false): Habit[] {
   return data.habits.filter((h) => h.planId === planId && (includeArchived || !h.archived));
+}
+
+export interface PlanSessionSummary {
+  /** Sessions completed so far across all active habits in the plan. */
+  done: number;
+  /** Total target sessions for the whole plan (all weeks). */
+  total: number;
+  /** Percent complete (done / total × 100), or null when there is no target. */
+  pct: number | null;
+}
+
+/**
+ * Whole-plan "sessions" summary: total target sessions across the entire plan
+ * (summed over its active habits' weekly frequency goals) and how many have
+ * been done so far. For a single "x3/week" habit over 22 weeks this is the
+ * 10/66 · 15% figure. Not capped — extra work can exceed 100%.
+ */
+export function planSessionSummary(data: AppData, plan: Plan, today: ISODate): PlanSessionSummary {
+  let done = 0;
+  let total = 0;
+  for (const habit of habitsForPlan(data, plan.id)) {
+    total += fullPlanSessionTarget(plan, habit);
+    done += sessionsDoneSoFar(plan, habit, data.entries, today);
+  }
+  return { done, total, pct: total > 0 ? (done / total) * 100 : null };
 }
 
 export function planById(data: AppData, id: string): Plan | undefined {
