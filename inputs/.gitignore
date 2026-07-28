@@ -7,3 +7,8 @@ coverage
 .eslintcache
 tsconfig.tsbuildinfo
 *.tsbuildinfo
+
+# This app is standalone (not part of the surrounding pnpm workspace) and uses
+# npm, so its lockfile must be tracked for reproducible installs on Vercel.
+# The repo root ignores **/package-lock.json for the pnpm monorepo; undo that here.
+!package-lock.json
