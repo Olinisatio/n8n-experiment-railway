@@ -381,7 +381,7 @@ export function EstimateGenerator({ trade }: { trade: Trade }) {
           </SectionHeading>
 
           <div
-            className="hidden gap-3 border-b border-line pb-2 text-xs font-bold tracking-wide text-ink-soft md:grid md:grid-cols-[1.5rem_minmax(0,1fr)_5rem_7rem_7rem_6.5rem_2.5rem]"
+            className="hidden gap-3 border-b border-line pb-2 text-xs font-bold tracking-wide text-ink-soft md:grid md:grid-cols-[1.5rem_minmax(0,1fr)_5rem_7rem_7rem_6.5rem_5.5rem]"
             aria-hidden="true"
           >
             <span />
@@ -406,7 +406,7 @@ export function EstimateGenerator({ trade }: { trade: Trade }) {
                   if (dragIndex !== null) moveLine(dragIndex, index);
                   setDragIndex(null);
                 }}
-                className={`grid grid-cols-2 gap-3 py-4 md:grid-cols-[1.5rem_minmax(0,1fr)_5rem_7rem_7rem_6.5rem_2.5rem] md:items-center md:py-2 ${
+                className={`grid grid-cols-2 gap-3 py-4 md:grid-cols-[1.5rem_minmax(0,1fr)_5rem_7rem_7rem_6.5rem_5.5rem] md:items-center md:py-2 ${
                   dragIndex === index ? 'opacity-50' : ''
                 }`}
               >
@@ -477,13 +477,15 @@ export function EstimateGenerator({ trade }: { trade: Trade }) {
                   </output>
                 </div>
 
-                <div className="col-span-2 flex items-center justify-end gap-1 md:col-span-1 md:flex-col md:gap-0">
+                {/* One grid cell — a separate desktop delete button would
+                    overflow the seven-column template onto a second row. */}
+                <div className="col-span-2 flex items-center justify-end gap-1 md:col-span-1 md:gap-0">
                   <button
                     type="button"
                     aria-label={`Move line ${index + 1} up`}
                     disabled={index === 0}
                     onClick={() => moveLine(index, index - 1)}
-                    className="min-h-11 w-11 rounded text-ink-soft hover:bg-surface-soft disabled:opacity-30 md:h-5 md:min-h-0 md:w-6 md:leading-none"
+                    className="min-h-11 w-11 rounded text-ink-soft hover:bg-surface-soft disabled:opacity-30 md:h-8 md:min-h-0 md:w-7"
                   >
                     ↑
                   </button>
@@ -492,7 +494,7 @@ export function EstimateGenerator({ trade }: { trade: Trade }) {
                     aria-label={`Move line ${index + 1} down`}
                     disabled={index === lines.length - 1}
                     onClick={() => moveLine(index, index + 1)}
-                    className="min-h-11 w-11 rounded text-ink-soft hover:bg-surface-soft disabled:opacity-30 md:h-5 md:min-h-0 md:w-6 md:leading-none"
+                    className="min-h-11 w-11 rounded text-ink-soft hover:bg-surface-soft disabled:opacity-30 md:h-8 md:min-h-0 md:w-7"
                   >
                     ↓
                   </button>
@@ -504,16 +506,15 @@ export function EstimateGenerator({ trade }: { trade: Trade }) {
                   >
                     Delete
                   </button>
+                  <button
+                    type="button"
+                    aria-label={`Delete line ${index + 1}`}
+                    onClick={() => removeLine(line.id)}
+                    className="hidden h-8 w-7 rounded text-lg text-ink-soft hover:bg-red-50 hover:text-red-700 md:block"
+                  >
+                    ×
+                  </button>
                 </div>
-
-                <button
-                  type="button"
-                  aria-label={`Delete line ${index + 1}`}
-                  onClick={() => removeLine(line.id)}
-                  className="hidden text-lg text-ink-soft hover:text-red-700 md:block"
-                >
-                  ×
-                </button>
               </li>
             ))}
           </ul>
