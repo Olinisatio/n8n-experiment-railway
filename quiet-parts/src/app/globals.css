@@ -391,6 +391,361 @@ button {
   }
 }
 
+/* ------------------------------------------------------------- utilities -- */
+
+/* The intro block and the body copy are hidden this way rather than
+   unmounted, so the H1 and the prose are present in the DOM at every stage of
+   the flow — including while a crawler is looking at it. */
+.tucked {
+  display: none;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.eyebrow {
+  font-family: var(--font-karla), system-ui, sans-serif;
+  font-size: 0.74rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0 0 0.6rem;
+}
+
+/* Margin annotations. These are the Caveat sites — never anything else. */
+.margin-note {
+  display: block;
+  margin: 0.75rem 0 0;
+}
+
+@media (min-width: 900px) {
+  .margin-note {
+    transform: rotate(-1.6deg) translateX(0.4rem);
+  }
+}
+
+/* --------------------------------------------------------------- intro ---- */
+
+.page-head {
+  padding: 2.75rem 0 0;
+}
+
+@media (min-width: 700px) {
+  .page-head {
+    padding-top: 4rem;
+  }
+}
+
+.subline {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-style: italic;
+  font-variation-settings:
+    'SOFT' 40,
+    'WONK' 1,
+    'opsz' 36;
+  font-size: clamp(1.1rem, 3.6vw, 1.32rem);
+  line-height: 1.35;
+  color: var(--ink-soft);
+  margin: 0.85rem 0 1.35rem;
+  max-width: 30ch;
+}
+
+/* The disclaimer has to be visible without scrolling on a phone, so it is
+   kept tight and sits immediately under the two intro sentences. */
+.disclaimer {
+  border: 1px solid var(--paper-edge);
+  border-left: 3px solid var(--clay-light);
+  border-radius: 3px;
+  padding: 0.8rem 0.95rem;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin: 0 0 0.9rem;
+  max-width: var(--measure);
+}
+
+.privacy-line {
+  font-size: 0.86rem;
+  color: var(--ink-soft);
+  margin: 0 0 2rem;
+}
+
+/* ------------------------------------------------------------ name step --- */
+
+.name-step {
+  padding-bottom: 3rem;
+}
+
+.name-card {
+  padding: 1.4rem 1.25rem 1.5rem;
+}
+
+@media (min-width: 700px) {
+  .name-card {
+    padding: 1.75rem 1.75rem 1.9rem;
+  }
+}
+
+.who-help {
+  margin: 0.45rem 0 1.1rem;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.85rem 0 1.4rem;
+}
+
+.begin {
+  width: 100%;
+}
+
+@media (min-width: 560px) {
+  .begin {
+    width: auto;
+    min-width: 11rem;
+  }
+}
+
+.name-note {
+  margin-top: 1rem;
+}
+
+/* -------------------------------------------------------- question flow --- */
+
+/* svh rather than vh: on iOS the address bar makes vh taller than the visible
+   area, which would push the options under the chrome. */
+.stage {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0 1.5rem;
+}
+
+.stage-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.stage-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.7rem;
+}
+
+.back {
+  background: none;
+  border: 0;
+  padding: 0.35rem 0.1rem;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: color var(--dur) var(--ease);
+}
+
+.back:hover {
+  color: var(--clay);
+}
+
+.stage-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.q-statement {
+  font-size: clamp(1.6rem, 6.6vw, 2rem);
+  font-variation-settings:
+    'SOFT' 40,
+    'WONK' 1,
+    'opsz' 72;
+  line-height: 1.2;
+  letter-spacing: -0.014em;
+  text-align: center;
+  margin: 0 auto 2.25rem;
+  max-width: 19ch;
+  outline: none;
+}
+
+.options {
+  display: grid;
+  gap: 0.55rem;
+  max-width: 26rem;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.stage-foot {
+  text-align: center;
+  margin: 0;
+}
+
+/* -------------------------------------------------------------- results --- */
+
+.results-block {
+  padding: 2.5rem 0 3.5rem;
+}
+
+@media (min-width: 700px) {
+  .results-block {
+    padding-top: 3.5rem;
+  }
+}
+
+.pattern-name {
+  margin-bottom: 0.15rem;
+}
+
+.pattern-tagline {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-style: italic;
+  font-variation-settings:
+    'SOFT' 36,
+    'WONK' 1,
+    'opsz' 30;
+  font-size: 1.06rem;
+  margin: 0 0 1.1rem;
+}
+
+.scripts-block {
+  margin-top: 2.75rem;
+}
+
+/* Stacked on a phone. Side by side the annotation runs off the edge, and a
+   handwritten note that gets clipped looks like a bug rather than a margin. */
+.scripts-head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+}
+
+@media (min-width: 640px) {
+  .scripts-head {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.9rem;
+  }
+}
+
+.scripts-head .margin-note {
+  margin: 0;
+}
+
+.expect {
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  border-top: 1px solid var(--paper-edge);
+  padding-top: 0.85rem;
+  margin: 1.25rem 0 0;
+}
+
+.expect strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-bottom: 2rem;
+}
+
+.actions .btn {
+  flex: 1 1 14rem;
+}
+
+.signpost {
+  border-top: 1px solid var(--paper-edge);
+  padding-top: 1.1rem;
+  margin-bottom: 2.5rem;
+  max-width: var(--measure);
+}
+
+.email-block {
+  margin-bottom: 1rem;
+}
+
+.email-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 1rem 0 0.85rem;
+}
+
+.email-form .field {
+  flex: 1 1 14rem;
+  width: auto;
+}
+
+/* ----------------------------------------------------------- comparison --- */
+
+.compare {
+  margin-top: 2.5rem;
+}
+
+.compare-list {
+  list-style: none;
+  margin: 0 0 1.1rem;
+  padding: 0;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.compare-row {
+  border: 1px solid var(--paper-edge);
+  border-left: 3px solid var(--clay);
+  border-radius: 3px;
+  padding: 0.85rem 1rem;
+  background: var(--paper-deep);
+}
+
+.compare-row.band-steady {
+  border-left-color: var(--sage);
+}
+
+.compare-person {
+  font-family: var(--font-karla), system-ui, sans-serif;
+  font-size: 0.74rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0 0 0.3rem;
+}
+
+.compare-band {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-variation-settings:
+    'SOFT' 34,
+    'WONK' 1,
+    'opsz' 32;
+  font-size: 1.1rem;
+  line-height: 1.25;
+  margin: 0 0 0.25rem;
+}
+
+.compare-pattern {
+  font-size: 0.9rem;
+  margin: 0;
+}
+
 /* --------------------------------------------------------------- scripts -- */
 
 /* Scripts are set in Fraunces italic against a hand-drawn left rule. The rule
@@ -533,6 +888,37 @@ button {
 
 .prose .script-list {
   margin: 0.9rem 0 1.6rem;
+  padding-left: 2.5rem;
+}
+
+.essay {
+  padding-bottom: 4rem;
+}
+
+/* Numbers are set small and in clay so they read as a workbook's marginal
+   numbering rather than as a listicle. */
+.example-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: qp-eg;
+}
+
+.example-list > li {
+  position: relative;
+  counter-increment: qp-eg;
+}
+
+.example-list > li::before {
+  content: counter(qp-eg);
+  position: absolute;
+  left: -1.75rem;
+  top: 0.28em;
+  font-family: var(--font-karla), system-ui, sans-serif;
+  font-style: normal;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--clay);
 }
 
 /* =========================================================================
@@ -568,14 +954,16 @@ button {
     line-height: 1.5;
   }
 
+  /* The worksheet is the only thing that prints. `.screen-only` marks the
+     intro, the essay, the FAQ and the footer; the rest of this list is a
+     safety net so a new element added later cannot leak onto the page. */
   .screen-only,
   .grain,
   nav,
-  header.site,
-  footer.site,
+  article,
+  footer:not(.print-foot),
   button,
-  form,
-  a[href]::after {
+  form {
     display: none !important;
   }
 
