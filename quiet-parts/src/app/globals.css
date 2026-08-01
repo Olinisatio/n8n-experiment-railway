@@ -18,6 +18,12 @@
   --ink-soft: #6b5d50;
   --clay: #a67c52;
   --clay-light: #c89f7b;
+  /* Clay at body size only reaches 3.3:1 on paper, which fails AA. This is
+     the same hue darkened to 4.6:1, and it is what every piece of clay-
+     coloured *text* uses, and it is also the fill behind white button labels
+     (white on plain clay is only 3.5:1). --clay itself stays for borders,
+     fills and rules, where contrast rules do not apply. */
+  --clay-deep: #82603e;
   --sage: #7a8b6f;
 
   /* The only shadow in the system, and a barely-there version of it. */
@@ -129,7 +135,7 @@ p {
 }
 
 a {
-  color: var(--clay);
+  color: var(--clay-deep);
   text-underline-offset: 0.18em;
   text-decoration-thickness: 1px;
 }
@@ -181,7 +187,7 @@ button {
   font-family: var(--font-caveat), cursive;
   font-size: 1.28rem;
   line-height: 1.35;
-  color: var(--clay);
+  color: var(--clay-deep);
   transform: rotate(-1.2deg);
   display: inline-block;
 }
@@ -240,8 +246,8 @@ button {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  border: 1px solid var(--clay);
-  background: var(--clay);
+  border: 1px solid var(--clay-deep);
+  background: var(--clay-deep);
   color: #fbf7f1;
   border-radius: 3px;
   padding: 0.72rem 1.5rem;
@@ -257,8 +263,8 @@ button {
 }
 
 .btn:hover:not(:disabled) {
-  background: #8f6842;
-  border-color: #8f6842;
+  background: #6e5133;
+  border-color: #6e5133;
 }
 
 .btn:disabled {
@@ -268,7 +274,7 @@ button {
 
 .btn-quiet {
   background: transparent;
-  color: var(--clay);
+  color: var(--clay-deep);
   border-color: var(--paper-edge);
 }
 
@@ -446,12 +452,11 @@ button {
 }
 
 .subline {
-  font-family: var(--font-fraunces), Georgia, serif;
+  font-family: var(--font-fraunces-italic), Georgia, serif;
   font-style: italic;
   font-variation-settings:
     'SOFT' 40,
-    'WONK' 1,
-    'opsz' 36;
+    'WONK' 1;
   font-size: clamp(1.1rem, 3.6vw, 1.32rem);
   line-height: 1.35;
   color: var(--ink-soft);
@@ -556,7 +561,7 @@ button {
 }
 
 .back:hover {
-  color: var(--clay);
+  color: var(--clay-deep);
 }
 
 .stage-body {
@@ -611,12 +616,11 @@ button {
 }
 
 .pattern-tagline {
-  font-family: var(--font-fraunces), Georgia, serif;
+  font-family: var(--font-fraunces-italic), Georgia, serif;
   font-style: italic;
   font-variation-settings:
     'SOFT' 36,
-    'WONK' 1,
-    'opsz' 30;
+    'WONK' 1;
   font-size: 1.06rem;
   margin: 0 0 1.1rem;
 }
@@ -768,12 +772,11 @@ button {
 }
 
 .script {
-  font-family: var(--font-fraunces), Georgia, serif;
+  font-family: var(--font-fraunces-italic), Georgia, serif;
   font-style: italic;
   font-variation-settings:
     'SOFT' 40,
-    'WONK' 1,
-    'opsz' 24;
+    'WONK' 1;
   font-size: 1.16rem;
   line-height: 1.5;
   color: var(--ink);
@@ -819,17 +822,17 @@ button {
 /* ---------------------------------------------------------------- grain --- */
 
 /* Fixed so it never scrolls with the content — real paper texture does not
-   move. pointer-events: none is what makes it safe to sit on top of
-   everything. */
+   move. pointer-events: none is what makes it safe to sit over everything.
+   The noise is a seamless 180px tile: a full-viewport feTurbulence element
+   costs about a second of LCP on a throttled phone, a tile costs nothing. */
 .grain {
   position: fixed;
   inset: 0;
-  width: 100vw;
-  height: 100vh;
   opacity: 0.035;
   pointer-events: none;
   z-index: 40;
-  mix-blend-mode: multiply;
+  background-repeat: repeat;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 /* ----------------------------------------------------------- underlines --- */
@@ -918,7 +921,7 @@ button {
   font-style: normal;
   font-size: 0.72rem;
   letter-spacing: 0.04em;
-  color: var(--clay);
+  color: var(--clay-deep);
 }
 
 /* =========================================================================
@@ -1043,7 +1046,7 @@ button {
   }
 
   .print-script {
-    font-family: var(--font-fraunces), Georgia, serif;
+    font-family: var(--font-fraunces-italic), Georgia, serif;
     font-style: italic;
     font-size: 12.5pt;
     line-height: 1.45;

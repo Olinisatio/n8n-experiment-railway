@@ -10,16 +10,15 @@
 /**
  * Paper grain across the entire viewport. Fixed, non-interactive, and at 0.035
  * opacity — felt rather than seen. Rendered once, in the layout.
+ *
+ * The noise itself is a 180px `feTurbulence` tile in a CSS background rather
+ * than a full-viewport SVG element. Rasterising turbulence across the whole
+ * screen is genuinely expensive — it cost about a second of LCP on a
+ * throttled phone — while a small tile is rasterised once and repeated by the
+ * compositor. `stitchTiles` is what keeps the seams invisible.
  */
 export function PaperGrain() {
-  return (
-    <svg className="grain" aria-hidden="true" focusable="false" role="presentation">
-      <filter id="qp-grain">
-        <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
-      </filter>
-      <rect width="100%" height="100%" filter="url(#qp-grain)" />
-    </svg>
-  );
+  return <div className="grain" aria-hidden="true" />;
 }
 
 /**

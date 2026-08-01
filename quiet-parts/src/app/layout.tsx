@@ -15,22 +15,46 @@ import './globals.css';
 const fraunces = Fraunces({
   subsets: ['latin'],
   axes: ['SOFT', 'WONK', 'opsz'],
-  style: ['normal', 'italic'],
   display: 'swap',
   variable: '--font-fraunces',
 });
 
+/**
+ * Italic is a separate declaration for two reasons, both of them weight.
+ *
+ * It stays out of the preload: preloading both cuts meant 270 kB of Fraunces
+ * competing with the H1, worth roughly a second of LCP on a throttled phone.
+ * And it drops the `opsz` axis, which halves the file. Optical sizing earns
+ * its keep on a 3.6rem heading; on a 1.16rem script nobody can see it, and
+ * 70 kB is a lot to pay for a difference that isn't visible.
+ */
+const frauncesItalic = Fraunces({
+  subsets: ['latin'],
+  axes: ['SOFT', 'WONK'],
+  style: ['italic'],
+  display: 'swap',
+  variable: '--font-fraunces-italic',
+  preload: false,
+});
+
 const karla = Karla({
   subsets: ['latin'],
+  weight: ['400', '600'],
   display: 'swap',
   variable: '--font-karla',
 });
 
-/** Handwritten accents only — used two or three times on the entire page. */
+/**
+ * Handwritten accents only — two or three uses on the entire page, none of
+ * them above the fold. Preloading it would make it compete with Fraunces for
+ * the H1, so it is fetched lazily when it is first actually needed.
+ */
 const caveat = Caveat({
   subsets: ['latin'],
+  weight: '400',
   display: 'swap',
   variable: '--font-caveat',
+  preload: false,
 });
 
 export const viewport: Viewport = {
@@ -68,7 +92,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-GB" className={`${fraunces.variable} ${karla.variable} ${caveat.variable}`}>
+    <html
+      lang="en-GB"
+      className={`${fraunces.variable} ${frauncesItalic.variable} ${karla.variable} ${caveat.variable}`}
+    >
       <body>
         <PaperGrain />
         {children}
