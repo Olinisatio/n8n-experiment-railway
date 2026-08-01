@@ -1,0 +1,700 @@
+@import 'tailwindcss';
+
+/* ===========================================================================
+   QUIET PARTS — design system
+   ---------------------------------------------------------------------------
+   Warm organic. The reference object is a well-printed workbook, not an app.
+   Three rules that everything below obeys:
+     1. No grey shadows. Shadows are brown-tinted or they don't exist.
+     2. No pills. Radii live between 2px and 4px.
+     3. No gradients, no glass, no scale-on-hover.
+   =========================================================================== */
+
+:root {
+  --paper: #f5efe6;
+  --paper-deep: #ede4d8;
+  --paper-edge: #e0d4c3;
+  --ink: #3d3229;
+  --ink-soft: #6b5d50;
+  --clay: #a67c52;
+  --clay-light: #c89f7b;
+  --sage: #7a8b6f;
+
+  /* The only shadow in the system, and a barely-there version of it. */
+  --lift: 0 2px 12px rgba(61, 50, 41, 0.06);
+  --lift-soft: 0 1px 6px rgba(61, 50, 41, 0.04);
+
+  /* Motion. Slow, organic, never springy. */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur: 480ms;
+
+  --measure: 62ch;
+}
+
+/* Tailwind v4 theme bridge — lets utility classes reach the same palette
+   without a second source of truth. */
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-deep: var(--paper-deep);
+  --color-paper-edge: var(--paper-edge);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-clay: var(--clay);
+  --color-clay-light: var(--clay-light);
+  --color-sage: var(--sage);
+  --font-display: var(--font-fraunces), Georgia, 'Times New Roman', serif;
+  --font-body: var(--font-karla), system-ui, -apple-system, sans-serif;
+  --font-hand: var(--font-caveat), cursive;
+}
+
+/* ---------------------------------------------------------------- base ---- */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-karla), system-ui, -apple-system, sans-serif;
+  font-size: 18px;
+  line-height: 1.7;
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (min-width: 700px) {
+  body {
+    font-size: 19px;
+  }
+}
+
+/* Fraunces is a variable font with optical sizing plus two personality axes.
+   SOFT rounds the terminals, WONK swaps in the cursive-ish alternates. Both
+   are held low: enough to read warm, not enough to read novelty. */
+h1,
+h2,
+h3,
+h4,
+.display {
+  font-family: var(--font-fraunces), Georgia, 'Times New Roman', serif;
+  font-variation-settings:
+    'SOFT' 30,
+    'WONK' 1;
+  font-optical-sizing: auto;
+  line-height: 1.1;
+  letter-spacing: -0.011em;
+  margin: 0;
+  font-weight: 600;
+  text-wrap: balance;
+}
+
+/* At display sizes the optical axis wants to run high and the letterspacing
+   wants to come in. */
+.display-xl {
+  font-size: clamp(2.25rem, 8vw, 3.65rem);
+  font-variation-settings:
+    'SOFT' 45,
+    'WONK' 1,
+    'opsz' 144;
+  letter-spacing: -0.022em;
+}
+
+.display-lg {
+  font-size: clamp(1.75rem, 5.6vw, 2.6rem);
+  font-variation-settings:
+    'SOFT' 40,
+    'WONK' 1,
+    'opsz' 96;
+  letter-spacing: -0.018em;
+}
+
+.display-md {
+  font-size: clamp(1.35rem, 3.6vw, 1.7rem);
+  font-variation-settings:
+    'SOFT' 32,
+    'WONK' 1,
+    'opsz' 48;
+}
+
+p {
+  margin: 0 0 1.15em;
+  max-width: var(--measure);
+}
+
+a {
+  color: var(--clay);
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
+
+a:hover {
+  color: var(--ink);
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+/* Focus is clay, square, and always visible — this page is used by people
+   moving fast on a phone and by people on a keyboard. */
+:focus-visible {
+  outline: 2px solid var(--clay);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ------------------------------------------------------------ structure --- */
+
+.shell {
+  width: 100%;
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+@media (min-width: 700px) {
+  .shell {
+    padding: 0 2rem;
+  }
+}
+
+.ink-soft {
+  color: var(--ink-soft);
+}
+
+.small {
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
+
+/* Handwritten accents. Deliberately rationed — three uses across the whole
+   page. Any more and the whole thing tips into scrapbook. */
+.hand {
+  font-family: var(--font-caveat), cursive;
+  font-size: 1.28rem;
+  line-height: 1.35;
+  color: var(--clay);
+  transform: rotate(-1.2deg);
+  display: inline-block;
+}
+
+/* ---------------------------------------------------------------- cards --- */
+
+.card {
+  background: var(--paper-deep);
+  border: 1px solid var(--paper-edge);
+  border-radius: 3px;
+  padding: 1.15rem 1.25rem;
+}
+
+.card-plain {
+  background: transparent;
+  border: 1px solid var(--paper-edge);
+  border-radius: 3px;
+  padding: 1.15rem 1.25rem;
+}
+
+.card-raised {
+  background: var(--paper-deep);
+  border: 1px solid var(--paper-edge);
+  border-radius: 3px;
+  box-shadow: var(--lift);
+}
+
+/* --------------------------------------------------------------- inputs --- */
+
+.field {
+  width: 100%;
+  background: #fbf7f1;
+  border: 1px solid var(--paper-edge);
+  border-radius: 3px;
+  padding: 0.8rem 0.9rem;
+  font-family: var(--font-karla), system-ui, sans-serif;
+  font-size: 1.05rem;
+  color: var(--ink);
+  transition: border-color var(--dur) var(--ease);
+}
+
+.field::placeholder {
+  color: color-mix(in srgb, var(--ink-soft) 55%, transparent);
+}
+
+.field:focus {
+  border-color: var(--clay);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(166, 124, 82, 0.14);
+}
+
+/* -------------------------------------------------------------- buttons --- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid var(--clay);
+  background: var(--clay);
+  color: #fbf7f1;
+  border-radius: 3px;
+  padding: 0.72rem 1.5rem;
+  font-family: var(--font-karla), system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  cursor: pointer;
+  transition:
+    background-color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    color var(--dur) var(--ease);
+}
+
+.btn:hover:not(:disabled) {
+  background: #8f6842;
+  border-color: #8f6842;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-quiet {
+  background: transparent;
+  color: var(--clay);
+  border-color: var(--paper-edge);
+}
+
+.btn-quiet:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--clay-light) 16%, transparent);
+  border-color: var(--clay-light);
+  color: var(--ink);
+}
+
+/* Quick-pick chips. Square-cornered on purpose — the pill is the single most
+   SaaS-looking shape there is. */
+.chip {
+  background: transparent;
+  border: 1px solid var(--paper-edge);
+  border-radius: 3px;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition:
+    background-color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    color var(--dur) var(--ease);
+}
+
+.chip:hover {
+  border-color: var(--clay-light);
+  color: var(--ink);
+}
+
+.chip[aria-pressed='true'] {
+  border-color: var(--clay);
+  background: color-mix(in srgb, var(--clay-light) 20%, transparent);
+  color: var(--ink);
+}
+
+/* ------------------------------------------------------- answer options --- */
+
+.option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: var(--paper-deep);
+  border: 1px solid var(--paper-edge);
+  border-radius: 3px;
+  padding: 0.85rem 1.05rem;
+  font-size: 1.05rem;
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    background-color 200ms var(--ease),
+    border-color 200ms var(--ease);
+}
+
+.option:hover {
+  border-color: var(--clay-light);
+  background: color-mix(in srgb, var(--clay-light) 12%, var(--paper-deep));
+}
+
+.option[data-selected='true'] {
+  border-color: var(--clay);
+  background: color-mix(in srgb, var(--clay-light) 26%, var(--paper-deep));
+}
+
+/* --------------------------------------------------------- progress bar --- */
+
+.progress {
+  height: 2px;
+  width: 100%;
+  background: var(--paper-edge);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress > i {
+  display: block;
+  height: 100%;
+  background: var(--clay);
+  transition: width var(--dur) var(--ease);
+}
+
+/* --------------------------------------------------------------- motion --- */
+
+@keyframes drift-in {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.drift {
+  animation: drift-in var(--dur) var(--ease) both;
+}
+
+.drift-1 {
+  animation-delay: 70ms;
+}
+.drift-2 {
+  animation-delay: 140ms;
+}
+.drift-3 {
+  animation-delay: 210ms;
+}
+.drift-4 {
+  animation-delay: 280ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* --------------------------------------------------------------- scripts -- */
+
+/* Scripts are set in Fraunces italic against a hand-drawn left rule. The rule
+   is an SVG sitting in the padding, not a border, so it wobbles. */
+.script-list {
+  position: relative;
+  padding-left: 1.4rem;
+  margin: 1.4rem 0;
+  list-style: none;
+}
+
+.script-rule {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 8px;
+  color: var(--clay-light);
+  pointer-events: none;
+}
+
+.script {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-style: italic;
+  font-variation-settings:
+    'SOFT' 40,
+    'WONK' 1,
+    'opsz' 24;
+  font-size: 1.16rem;
+  line-height: 1.5;
+  color: var(--ink);
+  margin: 0 0 0.95rem;
+  max-width: 54ch;
+}
+
+.script:last-child {
+  margin-bottom: 0;
+}
+
+.script-note {
+  font-family: var(--font-karla), system-ui, sans-serif;
+  font-style: normal;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  display: block;
+  margin-top: 0.15rem;
+}
+
+/* -------------------------------------------------------- pull quote ------ */
+
+.pull-quote {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-variation-settings:
+    'SOFT' 45,
+    'WONK' 1,
+    'opsz' 144;
+  font-size: clamp(1.85rem, 6.4vw, 2.9rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  margin: 0 0 1.5rem;
+  text-wrap: balance;
+  max-width: 20ch;
+}
+
+/* Sage appears exactly once in the system: the calm/steady band. */
+.band-steady .pull-quote {
+  color: var(--sage);
+}
+
+/* ---------------------------------------------------------------- grain --- */
+
+/* Fixed so it never scrolls with the content — real paper texture does not
+   move. pointer-events: none is what makes it safe to sit on top of
+   everything. */
+.grain {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0.035;
+  pointer-events: none;
+  z-index: 40;
+  mix-blend-mode: multiply;
+}
+
+/* ----------------------------------------------------------- underlines --- */
+
+.underlined {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.underlined-mark {
+  position: absolute;
+  left: -1px;
+  right: -1px;
+  bottom: -0.28em;
+  width: calc(100% + 2px);
+  height: 0.36em;
+  color: var(--clay-light);
+  overflow: visible;
+}
+
+/* ------------------------------------------------------------- dividers --- */
+
+.rule {
+  display: block;
+  width: 100%;
+  height: 9px;
+  color: var(--paper-edge);
+  margin: 3rem 0;
+}
+
+/* ------------------------------------------------------------ body copy --- */
+
+.prose h2 {
+  font-size: clamp(1.5rem, 4.4vw, 1.95rem);
+  font-variation-settings:
+    'SOFT' 36,
+    'WONK' 1,
+    'opsz' 72;
+  margin: 3rem 0 0.9rem;
+}
+
+.prose h3 {
+  font-size: 1.12rem;
+  font-variation-settings:
+    'SOFT' 28,
+    'WONK' 0,
+    'opsz' 24;
+  margin: 2rem 0 0.55rem;
+  letter-spacing: 0.005em;
+}
+
+.prose p {
+  margin: 0 0 1.1em;
+}
+
+.prose .script-list {
+  margin: 0.9rem 0 1.6rem;
+}
+
+/* =========================================================================
+   PRINT — the worksheet
+   -------------------------------------------------------------------------
+   This is a separate design, not a restyle of the screen. Black on white,
+   A4 and Letter, Fraunces headings, real ruled space to write in. It is the
+   thing people keep, so it gets its own margins and its own hierarchy.
+   ========================================================================= */
+
+.print-sheet {
+  display: none;
+}
+
+@page {
+  /* A4 and Letter differ in height, not much in width. 18mm sides work on
+     both without reflowing the measure. */
+  size: auto;
+  margin: 18mm 16mm 16mm;
+}
+
+@media print {
+  :root {
+    --ink: #000;
+    --ink-soft: #333;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 11.5pt;
+    line-height: 1.5;
+  }
+
+  .screen-only,
+  .grain,
+  nav,
+  header.site,
+  footer.site,
+  button,
+  form,
+  a[href]::after {
+    display: none !important;
+  }
+
+  .print-sheet {
+    display: block !important;
+    max-width: none;
+    font-family: var(--font-karla), Georgia, serif;
+  }
+
+  .print-sheet * {
+    max-width: none;
+  }
+
+  .print-masthead {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    border-bottom: 1pt solid #000;
+    padding-bottom: 5pt;
+    margin-bottom: 20pt;
+  }
+
+  .print-wordmark {
+    font-family: var(--font-fraunces), Georgia, serif;
+    font-variation-settings:
+      'SOFT' 40,
+      'WONK' 1;
+    font-size: 11pt;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .print-about {
+    font-size: 9.5pt;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #333;
+  }
+
+  .print-heading {
+    font-family: var(--font-fraunces), Georgia, serif;
+    font-variation-settings:
+      'SOFT' 45,
+      'WONK' 1,
+      'opsz' 144;
+    font-size: 25pt;
+    line-height: 1.1;
+    font-weight: 600;
+    margin: 0 0 14pt;
+    max-width: 22ch;
+  }
+
+  .print-label {
+    font-family: var(--font-karla), sans-serif;
+    font-size: 8.5pt;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: #333;
+    margin: 0 0 5pt;
+  }
+
+  .print-pattern-name {
+    font-family: var(--font-fraunces), Georgia, serif;
+    font-variation-settings:
+      'SOFT' 36,
+      'WONK' 1,
+      'opsz' 60;
+    font-size: 16pt;
+    font-weight: 600;
+    margin: 0 0 2pt;
+  }
+
+  .print-section {
+    margin-top: 22pt;
+    break-inside: avoid;
+  }
+
+  .print-script {
+    font-family: var(--font-fraunces), Georgia, serif;
+    font-style: italic;
+    font-size: 12.5pt;
+    line-height: 1.45;
+    margin: 0 0 9pt;
+    padding-left: 12pt;
+    border-left: 0.75pt solid #000;
+  }
+
+  .print-expect {
+    font-size: 10pt;
+    color: #333;
+    margin-top: 10pt;
+  }
+
+  /* Ruled writing space. Repeating linear-gradient prints reliably in every
+     browser engine; a table of empty rows does not. */
+  .print-rules {
+    margin-top: 10pt;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 25pt,
+      #999 25pt,
+      #999 25.4pt
+    );
+    height: 180pt;
+    break-inside: avoid;
+  }
+
+  .print-foot {
+    margin-top: 26pt;
+    padding-top: 6pt;
+    border-top: 0.5pt solid #999;
+    font-size: 9pt;
+    color: #333;
+    break-inside: avoid;
+  }
+
+  .print-break {
+    break-before: page;
+  }
+}
