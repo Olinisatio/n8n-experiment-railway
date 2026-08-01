@@ -27,7 +27,7 @@ export const concrete: Trade = {
     },
     {
       heading: 'How concrete contractors price a pour',
-      body: 'Material is calculated by volume and labour by area, which is why the two need different units. A cubic yard covers 81 square feet at four inches thick, so an 800 square foot slab needs roughly ten yards plus waste. Typical US figures: ready-mix delivered $140 to $200 per cubic yard, a finished four-inch residential slab $6 to $14 per square foot all in, and stamped or coloured work $12 to $25 per square foot. Short-load fees apply below four or five yards and belong on the estimate as their own line. The costs that surprise people are pump hire when a truck cannot reach, and disposal of an existing slab — broken concrete is heavy, and dumpster weight limits arrive faster than volume limits do.',
+      body: 'Material is calculated by volume and labour by area, which is why the two need different units. A cubic yard covers 81 square feet at four inches thick, so an 800 square foot slab needs roughly ten yards plus waste. Typical US figures: ready-mix delivered $140 to $200 per cubic yard, a finished four-inch residential slab $8 to $18 per square foot all in, with excavation, haul-off and reinforcement driving the top end, and stamped or coloured work $12 to $25 per square foot. Short-load fees apply below four or five yards and belong on the estimate as their own line. The costs that surprise people are pump hire when a truck cannot reach, and disposal of an existing slab — broken concrete is heavy, and dumpster weight limits arrive faster than volume limits do.',
     },
     {
       heading: 'Cracking, curing and setting expectations in writing',
@@ -41,7 +41,7 @@ export const concrete: Trade = {
     },
     {
       q: 'How much should I charge per square foot for concrete?',
-      a: 'A plain four-inch residential slab with broom finish typically runs $6 to $14 per square foot installed across the US, covering excavation, base, forming, reinforcement, concrete and finishing. Stamped or coloured work runs $12 to $25. The template separates each of those costs so you can price them to your own supplier and labour rates.',
+      a: 'A plain four-inch residential slab with broom finish typically runs $8 to $18 per square foot installed across the US once you include excavation, base, forming, reinforcement, concrete and finishing. Stamped or coloured work runs $12 to $25. The template separates each of those costs so you can price them to your own supplier and labour rates.',
     },
     {
       q: 'How do I calculate how much concrete I need?',

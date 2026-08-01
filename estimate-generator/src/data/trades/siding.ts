@@ -27,7 +27,7 @@ export const siding: Trade = {
     },
     {
       heading: 'How siding is measured and priced',
-      body: 'Siding is measured in squares — 100 square feet — the same as roofing, though most residential quotes present it per square foot. Measure wall area by elevation, subtract large openings, and add ten percent for waste, more on a cut-up elevation with dormers and gables. Typical US installed figures: vinyl $4 to $9 per square foot, engineered wood $6 to $12, fibre cement $8 to $16, and cedar $9 to $20. Fibre cement carries higher labour because it is heavy, requires specific fasteners and cutting equipment, and needs careful gapping and flashing. Height drives cost more than area — a two-storey elevation needs staging, and staging is a day rate that keeps accruing regardless of how much siding went up.',
+      body: 'Siding is measured in squares — 100 square feet — the same as roofing, though most residential quotes present it per square foot. Measure wall area by elevation, subtract large openings, and add ten percent for waste, more on a cut-up elevation with dormers and gables. Typical US installed figures: vinyl $4 to $9 per square foot, engineered wood $6 to $12, fibre cement $8 to $16, and cedar $9 to $20 — those figures cover supply and installation, with tear-off, trim, soffit and finish painting on top. Fibre cement carries higher labour because it is heavy, requires specific fasteners and cutting equipment, and needs careful gapping and flashing. Height drives cost more than area — a two-storey elevation needs staging, and staging is a day rate that keeps accruing regardless of how much siding went up.',
     },
     {
       heading: 'Rot, sheathing and the day-two conversation',

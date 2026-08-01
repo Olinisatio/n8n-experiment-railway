@@ -10,14 +10,14 @@ export const drywall: Trade = {
   intro:
     'Drywall is priced by the square foot and won or lost on the finish level. A customer comparing bids rarely knows that Level 3 and Level 5 are different products with a real cost difference, and the estimate that explains it is the one that stops looking expensive. This template arrives pre-filled for a roughly 1,800 square foot hang and finish: board supplied and hung, three-coat taping, sanding to Level 4, corner bead, knockdown texture, primer, scrap removal and crew hours. Adjust the area to your take-off, change the finish level in the description, and add rows for moisture-resistant board, fire-rated assemblies, ceilings or high work. Totals recalculate live and the PDF carries your logo, licence number and terms — including the dust and access language worth agreeing before you arrive. No signup, no email gate, no watermark.',
   lineItems: [
-    { description: '1/2 in drywall, supplied and hung', unit: 'sq ft', defaultQty: 1800, defaultRate: 1.85 },
-    { description: 'Taping and mudding, three coats', unit: 'sq ft', defaultQty: 1800, defaultRate: 1.45 },
-    { description: 'Sanding and finish to Level 4', unit: 'sq ft', defaultQty: 1800, defaultRate: 0.75 },
+    { description: '1/2 in drywall, supplied and hung', unit: 'sq ft', defaultQty: 1800, defaultRate: 1.1 },
+    { description: 'Taping and mudding, three coats', unit: 'sq ft', defaultQty: 1800, defaultRate: 0.95 },
+    { description: 'Sanding and finish to Level 4', unit: 'sq ft', defaultQty: 1800, defaultRate: 0.55 },
     { description: 'Corner bead, installed and finished', unit: 'linear ft', defaultQty: 160, defaultRate: 2.25 },
-    { description: 'Knockdown texture, applied', unit: 'sq ft', defaultQty: 1800, defaultRate: 0.95 },
-    { description: 'Primer coat, sprayed', unit: 'sq ft', defaultQty: 1800, defaultRate: 0.55 },
+    { description: 'Knockdown texture, applied', unit: 'sq ft', defaultQty: 1800, defaultRate: 0.75 },
+    { description: 'Primer coat, sprayed', unit: 'sq ft', defaultQty: 1800, defaultRate: 0.45 },
     { description: 'Scrap removal and disposal', unit: 'each', defaultQty: 1, defaultRate: 325 },
-    { description: 'Drywall crew labour', unit: 'hour', defaultQty: 24, defaultRate: 58 },
+    { description: 'Additional crew hours — high work and detailing', unit: 'hour', defaultQty: 24, defaultRate: 58 },
   ],
   commonUnits: ['sq ft', 'linear ft', 'sheet', 'hour', 'day', 'each', 'room'],
   bodyContent: [

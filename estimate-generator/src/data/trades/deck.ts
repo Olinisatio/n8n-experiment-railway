@@ -27,7 +27,7 @@ export const deck: Trade = {
     },
     {
       heading: 'How deck builders price by the square foot',
-      body: 'Square footage of deck surface is the headline unit, but the substructure cost varies with height far more than with area — a deck two feet off the ground and one twelve feet up have the same boards and very different framing. Typical US installed figures: pressure-treated $25 to $45 per square foot, composite $35 to $70, and hardwood such as ipe $45 to $90. Railing commonly runs $50 to $110 per linear foot installed depending on material, and stairs $150 to $250 per riser. Footings run $150 to $300 each. A useful sanity check: on a typical composite deck, decking material is around a third of the total, framing and footings another third, and railing, stairs and labour the rest. If your ratios are far from that, something is mispriced.',
+      body: 'Square footage of deck surface is the headline unit, but the substructure cost varies with height far more than with area — a deck two feet off the ground and one twelve feet up have the same boards and very different framing. Typical US installed figures: pressure-treated $25 to $45 per square foot, composite $35 to $80, and hardwood such as ipe $45 to $95. Railing commonly runs $50 to $110 per linear foot installed depending on material, and stairs $150 to $250 per riser. Footings run $150 to $300 each. A useful sanity check: on a typical composite deck, decking material is around a third of the total, framing and footings another third, and railing, stairs and labour the rest. If your ratios are far from that, something is mispriced.',
     },
     {
       heading: 'Permits, ledgers and building to code',
@@ -41,7 +41,7 @@ export const deck: Trade = {
     },
     {
       q: 'How much should I charge per square foot for a deck?',
-      a: 'US installed pricing typically runs $25 to $45 per square foot for pressure-treated, $35 to $70 for composite and $45 to $90 for hardwood. Height above grade affects the framing cost more than area does. Price railing and stairs separately — they are often a third of the total on a smaller deck.',
+      a: 'US installed pricing typically runs $25 to $45 per square foot for pressure-treated, $35 to $80 for composite and $45 to $95 for hardwood. Height above grade affects the framing cost more than area does. Price railing and stairs separately — they are often a third of the total on a smaller deck.',
     },
     {
       q: 'How do I price deck railing?',

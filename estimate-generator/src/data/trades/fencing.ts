@@ -13,7 +13,7 @@ export const fencing: Trade = {
     { description: 'Layout, marking and utility locate', unit: 'each', defaultQty: 1, defaultRate: 185 },
     { description: 'Post holes dug and set in concrete', unit: 'each', defaultQty: 26, defaultRate: 65 },
     { description: 'Pressure-treated 4x4 posts', unit: 'each', defaultQty: 26, defaultRate: 28 },
-    { description: 'Cedar privacy fence, 6 ft, supplied and built', unit: 'linear ft', defaultQty: 200, defaultRate: 32 },
+    { description: 'Cedar privacy panels and rails, 6 ft, supplied', unit: 'linear ft', defaultQty: 200, defaultRate: 17 },
     { description: 'Walk gate, single, with hardware', unit: 'each', defaultQty: 1, defaultRate: 485 },
     { description: 'Drive gate, double, with hardware', unit: 'each', defaultQty: 1, defaultRate: 985 },
     { description: 'Removal and disposal of existing fence', unit: 'linear ft', defaultQty: 200, defaultRate: 6.5 },
