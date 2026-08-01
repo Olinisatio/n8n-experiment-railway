@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Caveat, Fraunces, Karla } from 'next/font/google';
 import { PaperGrain } from '@/components/Texture';
 import { boundaries } from '@/data/dimensions/boundaries';
-import { absoluteUrl, siteName, siteUrl } from '@/lib/site';
+import { canonicalUrl, siteName, siteUrl } from '@/lib/site';
 import './globals.css';
 
 /**
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
   description: boundaries.metaDescription,
   // Canonical is set per-page; declaring the base here means every future
   // dimension page inherits the same non-www origin automatically.
-  alternates: { canonical: '/' },
+  alternates: { canonical: canonicalUrl },
   applicationName: siteName,
   robots: {
     index: true,
@@ -79,7 +79,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     siteName,
-    url: absoluteUrl('/'),
+    url: canonicalUrl,
     title: boundaries.metaTitle,
     description: boundaries.metaDescription,
   },

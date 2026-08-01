@@ -36,3 +36,13 @@ export function absoluteUrl(path: string): string {
   if (!path.startsWith('/')) return `${siteUrl}/${path}`;
   return `${siteUrl}${path}`;
 }
+
+/**
+ * The canonical URL of the home page, used for the canonical tag, the OG url
+ * and the sitemap entry alike. It exists as one constant because those have to
+ * be character-for-character identical, and they do not agree by default:
+ * Next normalises a canonical of `https://example.com/` down to
+ * `https://example.com`, while the sitemap writer emits whatever it is given.
+ * Defining it without the trailing slash is what makes both sides match.
+ */
+export const canonicalUrl = siteUrl;

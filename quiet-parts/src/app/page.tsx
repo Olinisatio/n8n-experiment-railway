@@ -4,12 +4,12 @@ import { BoundaryMap } from '@/components/BoundaryMap';
 import { HandUnderline } from '@/components/Texture';
 import { BoundariesEssay } from '@/content/BoundariesEssay';
 import { boundaries } from '@/data/dimensions/boundaries';
-import { absoluteUrl, siteName } from '@/lib/site';
+import { absoluteUrl, canonicalUrl, siteName } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: boundaries.metaTitle,
   description: boundaries.metaDescription,
-  alternates: { canonical: '/' },
+  alternates: { canonical: canonicalUrl },
 };
 
 /**

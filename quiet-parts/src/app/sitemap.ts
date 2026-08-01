@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { absoluteUrl } from '@/lib/site';
+import { canonicalUrl } from '@/lib/site';
 
 /**
  * Every URL here comes from `siteUrl`, the same value that produces the
@@ -11,7 +11,7 @@ import { absoluteUrl } from '@/lib/site';
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: absoluteUrl('/'),
+      url: canonicalUrl,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 1,
