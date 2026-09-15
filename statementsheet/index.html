@@ -16,8 +16,8 @@
                           Appears 1x:  const FORMSPREE_ENDPOINT in <script>
 
   3. StatementSheet       Product name.
-                          Appears in: <title>, meta description, hero subhead,
-                          modal microcopy, footer business name.
+                          Appears 3x: <title>, footer business name, and the
+                          footer "is in development" line.
 
   4. statementsheet.com.au  Domain.
                           Appears in: footer business line. (The <title> does
@@ -126,16 +126,12 @@ j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNo
   /* ---------- hero ---------- */
   .hero{padding-top:44px;border-bottom:1px solid var(--line)}
   @media (min-width:720px){.hero{padding-top:72px}}
-  .hero p.sub{
-    font-size:clamp(1.0625rem,2.3vw,1.3125rem);
-    max-width:36em;margin-bottom:1.75rem;color:var(--body);
-  }
   .hero .reassure{
     font-size:.9375rem;color:var(--muted);margin:1rem 0 0;max-width:38em;
   }
 
   /* ---------- hero proof graphic ---------- */
-  .proof{margin:0 0 2rem;padding:0}
+  .proof{margin:1.75rem 0 2rem;padding:0}
   .proof__scroll{
     overflow-x:auto;
     -webkit-overflow-scrolling:touch;
@@ -320,13 +316,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <section class="hero">
     <div class="wrap">
       <h1>Convert PDF Bank Statements to Excel</h1>
-      <p class="sub">
-        You drop in a client's PDF statement and get every transaction back in a
-        spreadsheet that imports straight into Xero. A whole quarter handled in
-        the time it takes to make a coffee, instead of an afternoon of typing.
-        In development — early access is opening in batches.
-      </p>
-
       <figure class="proof">
         <p class="proof__hint" aria-hidden="true">Swipe the panel to see what comes back &rarr;</p>
         <div class="proof__scroll">

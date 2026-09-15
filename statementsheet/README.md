@@ -21,7 +21,7 @@ the line each one appears on.
 |---|---|---|---|
 | 1 | `GTM-PLACEHOLDER` | `<head>` snippet + `<body>` noscript iframe (2 places) | Your GTM container ID, e.g. `GTM-ABC1234` |
 | 2 | `PLACEHOLDER_ID` | `FORMSPREE_ENDPOINT` in the `<script>` block (1 place) | Your Formspree form ID, e.g. `xayzabcd` |
-| 3 | `StatementSheet` | `<title>`, meta description, hero subhead, modal microcopy, footer | Final product name |
+| 3 | `StatementSheet` | `<title>` and the two footer lines (3 places) | Final product name |
 | 4 | `statementsheet.com.au` | Footer business line | Final domain |
 | 5 | `[ABN_PLACEHOLDER]` | Footer legal block | Registered ABN |
 | 6 | `[CONTACT_EMAIL_PLACEHOLDER]` | Footer legal block (mailto href + visible text) | Contact address |
