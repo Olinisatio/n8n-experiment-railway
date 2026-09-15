@@ -5,7 +5,7 @@
   StatementSheet — Google Ads validation landing page
   ============================================================================
 
-  PLACEHOLDERS TO SWAP BEFORE LAUNCH (6 items — search for each string):
+  PLACEHOLDERS TO SWAP BEFORE LAUNCH (9 items — search for each string):
 
   1. GTM-PLACEHOLDER      GTM container ID.
                           Appears 2x:  <head> container snippet
@@ -28,10 +28,19 @@
   6. [CONTACT_EMAIL_PLACEHOLDER]  Contact address. Appears 2x in the footer,
                           as the mailto: href and as the visible text.
 
-  ALSO REQUIRED BEFORE RUNNING ADS:
-  The footer links to "/privacy" and "/terms". Publish real pages at both
-  paths (or repoint the hrefs). Google Ads requires a reachable privacy
-  policy on any page collecting email addresses.
+  7. [LEGAL_ENTITY_PLACEHOLDER]   Registered entity behind the trading name.
+                          Appears in privacy.html and terms.html only.
+
+  8. [STATE_PLACEHOLDER]  State/territory governing the terms.
+                          Appears 1x in terms.html.
+
+  9. [EFFECTIVE_DATE_PLACEHOLDER]  Date the policy and terms take effect.
+                          Appears 1x each in privacy.html and terms.html.
+
+  DEPLOY ALL THREE FILES TOGETHER:
+  index.html, privacy.html and terms.html. The footer links are relative,
+  so they work on any host and when opened straight from disk. Google Ads
+  requires a reachable privacy policy on any page collecting emails.
 
   This page intentionally contains: no navigation, no social proof, no file
   upload, no payment step, no external CSS/JS/fonts. Do not add any.
@@ -577,7 +586,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         ABN [ABN_PLACEHOLDER] &middot;
         <a href="mailto:[CONTACT_EMAIL_PLACEHOLDER]">[CONTACT_EMAIL_PLACEHOLDER]</a>
       </p>
-      <p class="links"><a href="/privacy">Privacy</a><a href="/terms">Terms</a></p>
+      <p class="links"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></p>
     </div>
   </div>
 </footer>
