@@ -9,8 +9,11 @@
     Formspree endpoint   form mrpgndgq
     ABN                  79 395 679 698
     Effective date       15 September 2026
+    Contact address      francismike8384@gmail.com
+    Governing law        New South Wales
+    Operator             StatementSheet (ABN only — no separate entity named)
 
-  PLACEHOLDERS STILL TO SWAP (6 items — search for each string):
+  PLACEHOLDERS STILL TO SWAP (3 items — search for each string):
 
   1. GTM-PLACEHOLDER      GTM container ID.
                           Appears 2x in index.html: the <head> container
@@ -23,18 +26,6 @@
                           Also throughout privacy.html and terms.html.
 
   3. statementsheet.com.au  Domain. Footer business line.
-
-  4. [CONTACT_EMAIL_PLACEHOLDER]  Contact address.
-                          index.html 2x (mailto: href + visible text),
-                          privacy.html 6x, terms.html 2x.
-
-  5. [LEGAL_ENTITY_PLACEHOLDER]   Registered entity behind the trading name,
-                          e.g. "J Smith Pty Ltd" or "Jane Smith trading as
-                          StatementSheet". privacy.html 3x, terms.html 3x.
-                          Not used in index.html.
-
-  6. [STATE_PLACEHOLDER]  State/territory governing the terms.
-                          terms.html 2x. Not used in index.html.
 
   DEPLOY ALL THREE FILES TOGETHER:
   index.html, privacy.html and terms.html. The footer links are relative,
@@ -580,10 +571,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         not sell it or pass it to third parties. Reply to any email from us and
         we'll remove you.
       </p>
-      <!-- PLACEHOLDER: insert the real contact address (ABN is set) -->
       <p>
         ABN 79 395 679 698 &middot;
-        <a href="mailto:[CONTACT_EMAIL_PLACEHOLDER]">[CONTACT_EMAIL_PLACEHOLDER]</a>
+        <a href="mailto:francismike8384@gmail.com">francismike8384@gmail.com</a>
       </p>
       <p class="links"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></p>
     </div>
