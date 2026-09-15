@@ -12,15 +12,14 @@ upload field — do not add one.
 
 ## Deploy checklist
 
-### 1. Swap the six placeholders
+### 1. Swap the remaining placeholders
 
-All six are listed in the comment block at the very top of `index.html`, with
+The Formspree endpoint is already configured (form `mrpgndgq`). The rest are listed in the comment block at the very top of `index.html`, with
 the line each one appears on.
 
 | # | Placeholder | Where | Replace with |
 |---|---|---|---|
 | 1 | `GTM-PLACEHOLDER` | `<head>` snippet + `<body>` noscript iframe (2 places) | Your GTM container ID, e.g. `GTM-ABC1234` |
-| 2 | `PLACEHOLDER_ID` | `FORMSPREE_ENDPOINT` in the `<script>` block (1 place) | Your Formspree form ID, e.g. `xayzabcd` |
 | 3 | `StatementSheet` | `<title>` and the two footer lines (3 places) | Final product name |
 | 4 | `statementsheet.com.au` | Footer business line | Final domain |
 | 5 | `[ABN_PLACEHOLDER]` | Footer legal block | Registered ABN |
