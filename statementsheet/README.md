@@ -12,21 +12,23 @@ upload field — do not add one.
 
 ## Deploy checklist
 
-### 1. Swap the four placeholders
+### 1. Swap the six placeholders
 
-All four are listed in the comment block at the very top of `index.html`, with
+All six are listed in the comment block at the very top of `index.html`, with
 the line each one appears on.
 
 | # | Placeholder | Where | Replace with |
 |---|---|---|---|
 | 1 | `GTM-PLACEHOLDER` | `<head>` snippet + `<body>` noscript iframe (2 places) | Your GTM container ID, e.g. `GTM-ABC1234` |
 | 2 | `PLACEHOLDER_ID` | `FORMSPREE_ENDPOINT` in the `<script>` block (1 place) | Your Formspree form ID, e.g. `xayzabcd` |
-| 3 | `StatementSheet` | `<title>`, meta description, hero subhead, how-it-works heading, footer | Final product name |
-| 4 | `statementsheet.com.au` | Footer copy and the Privacy link target | Final domain |
+| 3 | `StatementSheet` | `<title>`, meta description, hero subhead, modal microcopy, footer | Final product name |
+| 4 | `statementsheet.com.au` | Footer business line | Final domain |
+| 5 | `[ABN_PLACEHOLDER]` | Footer legal block | Registered ABN |
+| 6 | `[CONTACT_EMAIL_PLACEHOLDER]` | Footer legal block (mailto href + visible text) | Contact address |
 
-Also publish a real privacy policy at `/privacy` (or repoint the footer link).
-Google Ads requires a reachable privacy policy on any page collecting emails —
-a dead link here can get the ad account flagged.
+Also publish real pages at `/privacy` and `/terms` (or repoint the two footer
+links). Google Ads requires a reachable privacy policy on any page collecting
+emails — a dead link here can get the ad account flagged.
 
 ### 2. Create the Formspree form
 
@@ -35,9 +37,9 @@ a dead link here can get the ad account flagged.
 3. Paste it over `PLACEHOLDER_ID`.
 4. Add your deployed domain to the form's allowed-domains list, or submissions
    from the live page will be rejected.
-5. Submit a test email from the live page and confirm it arrives. Each
-   submission posts JSON: `{ email, plan }`, plus a second optional post with
-   `monthly_statement_volume` if the visitor answers the follow-up question.
+5. Submit a test email from the live page and confirm it arrives. There is
+   exactly one POST per signup, carrying
+   `{ email, plan, monthly_statement_volume }`.
 
 ### 3. Deploy
 
@@ -78,12 +80,15 @@ In GTM:
    - Name: `signup_success`
    - Event name: `signup_success` *(exact match, no regex)*
    - Fires on: All Custom Events
-3. Optionally add a second Custom Event trigger for `volume_answered` if you
-   want the survey answer in GA4 as well.
 
-Verify in Preview mode: click a plan, submit an email, and confirm
-`signup_success` appears in the event stream with `plan` populated
-(`Solo`, `Practice` or `Firm`).
+There is only one conversion event. It carries both `plan` and `volume`, so
+you do not need a second trigger — map `DLV - volume` as a parameter on the
+same tag if you want the volume band in GA4.
+
+Verify in Preview mode: pick a plan, choose a volume band, submit an email,
+and confirm `signup_success` appears once in the event stream with both
+`plan` (`Solo`, `Practice`, `Firm`) and `volume` (`1-20`, `21-100`,
+`101-500`, `500+`) populated.
 
 ### 6. Link it to the Google Ads conversion action
 
@@ -101,7 +106,9 @@ Verify in Preview mode: click a plan, submit an email, and confirm
    *Recording conversions*).
 
 Segment reporting by the `plan` parameter — which price point converts is the
-whole point of the test.
+whole point of the test. `volume` tells you whether the people converting are
+the client load each tier was priced for, which is what you need before you
+set real limits.
 
 ---
 
@@ -115,6 +122,9 @@ measures:
 - No testimonials, logos, ratings, or signup counters. There are no customers
   yet, and invented social proof on a page collecting real emails is not
   acceptable.
+- The hero before/after graphic is hand-written inline SVG, not an image file.
+  It costs no extra request and stays sharp at any size. It illustrates the
+  intended output and the figcaption says so.
 - No file upload. Bank statements are sensitive client documents and there is
   no backend to receive them.
 - No language implying the product is live. Everything is early-access framing.
@@ -123,10 +133,15 @@ measures:
 
 ## Testing before you spend money on clicks
 
-- Submit with an invalid email — inline error, typed value preserved.
+- Submit with no volume band selected — inline error, focus jumps to the first
+  option, nothing is posted.
+- Submit with an invalid email — inline error, typed value and volume band both
+  preserved.
 - Kill your network and submit — visible error, no false confirmation, no
   `signup_success` event.
 - Submit successfully — the form is replaced in place; the page must not
   navigate, or the GTM event won't fire.
 - Tab through the modal with the keyboard — focus stays inside, Escape closes.
-- Load it on a phone — the Practice tier appears first.
+- Load it on a phone — the Practice tier appears first, and the hero graphic
+  scrolls sideways inside its own container without the page scrolling.
+- Disable JavaScript — the whole page still renders, graphic included.

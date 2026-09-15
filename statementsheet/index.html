@@ -5,7 +5,7 @@
   StatementSheet — Google Ads validation landing page
   ============================================================================
 
-  PLACEHOLDERS TO SWAP BEFORE LAUNCH (4 items — search for each string):
+  PLACEHOLDERS TO SWAP BEFORE LAUNCH (6 items — search for each string):
 
   1. GTM-PLACEHOLDER      GTM container ID.
                           Appears 2x:  <head> container snippet
@@ -17,19 +17,27 @@
 
   3. StatementSheet       Product name.
                           Appears in: <title>, meta description, hero subhead,
-                          how-it-works intro, modal microcopy, footer.
+                          modal microcopy, footer business name.
 
   4. statementsheet.com.au  Domain.
-                          Appears in: <title> is fine without it; used in
-                          footer line and in the Privacy link href
-                          (/privacy — point this at the real policy page).
+                          Appears in: footer business line. (The <title> does
+                          not use it.)
 
-  NOTE: the Privacy link currently points at "/privacy". Publish a real
-  privacy page at that path (or change the href) before running ads —
-  Google Ads requires a reachable privacy policy on lead-gen pages.
+  5. [ABN_PLACEHOLDER]    Registered ABN. Appears 1x in the footer.
+
+  6. [CONTACT_EMAIL_PLACEHOLDER]  Contact address. Appears 2x in the footer,
+                          as the mailto: href and as the visible text.
+
+  ALSO REQUIRED BEFORE RUNNING ADS:
+  The footer links to "/privacy" and "/terms". Publish real pages at both
+  paths (or repoint the hrefs). Google Ads requires a reachable privacy
+  policy on any page collecting email addresses.
 
   This page intentionally contains: no navigation, no social proof, no file
   upload, no payment step, no external CSS/JS/fonts. Do not add any.
+  The hero before/after graphic is hand-written inline SVG, not an image
+  file — it makes no network request. The only two requests this page makes
+  are the GTM container and the Formspree POST.
   ============================================================================
 -->
 <head>
@@ -108,12 +116,6 @@ j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNo
   .btn:hover{background:var(--accent-dark);border-color:var(--accent-dark)}
   .btn:active{background:#082a47;border-color:#082a47;transform:translateY(1px)}
   .btn--block{width:100%}
-  .btn--quiet{
-    color:var(--accent);background:#fff;border-color:var(--line-strong);
-    font-weight:600;
-  }
-  .btn--quiet:hover{background:var(--accent-tint);border-color:var(--accent);color:var(--accent-dark)}
-  .btn--quiet:active{background:#dbe7f1}
   .btn[disabled]{opacity:.6;cursor:progress}
 
   a{color:var(--accent)}
@@ -132,22 +134,39 @@ j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNo
     font-size:.9375rem;color:var(--muted);margin:1rem 0 0;max-width:38em;
   }
 
-  /* ---------- problem ---------- */
-  .alt{background:var(--bg-alt);border-block:1px solid var(--line)}
-  .grid3{display:grid;gap:28px;margin-top:32px}
-  @media (min-width:800px){.grid3{grid-template-columns:repeat(3,1fr);gap:40px}}
-  .item h3{margin-bottom:.35em}
-  .item p{margin:0;font-size:1rem}
-
-  /* ---------- steps ---------- */
-  .step{border-top:3px solid var(--accent);padding-top:16px}
-  .step .num{
-    display:block;font-size:.8125rem;font-weight:700;letter-spacing:.09em;
-    text-transform:uppercase;color:var(--accent);margin-bottom:.35rem;
+  /* ---------- hero proof graphic ---------- */
+  .proof{margin:0 0 2rem;padding:0}
+  .proof__scroll{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    padding-bottom:4px;
   }
-  .note{font-size:.9375rem;color:var(--muted);margin-top:28px}
+  .proof svg{
+    display:block;
+    width:100%;height:auto;
+    min-width:660px;          /* keeps the rows legible; scrolls on a phone */
+  }
+  .proof figcaption{
+    font-size:.875rem;color:var(--muted);
+    margin-top:12px;max-width:46em;line-height:1.5;
+  }
+  /* On a phone the graphic is wider than the screen, so the "after" panel
+     sits off to the right. Tell people it's there. */
+  .proof__hint{
+    font-size:.8125rem;font-weight:700;color:var(--accent);
+    letter-spacing:.02em;margin:0 0 8px;
+  }
+  @media (min-width:760px){.proof__hint{display:none}}
+
+  /* ---------- objections ---------- */
+  .qs{max-width:44em;margin-top:8px}
+  .qs > div{padding:26px 0;border-top:1px solid var(--line)}
+  .qs > div:first-child{border-top:0;padding-top:14px}
+  .qs h3{margin-bottom:.4em}
+  .qs p{margin:0;font-size:1.0625rem}
 
   /* ---------- pricing ---------- */
+  .alt{background:var(--bg-alt);border-block:1px solid var(--line)}
   .tiers{display:grid;gap:20px;margin-top:36px}
   @media (min-width:900px){
     .tiers{grid-template-columns:repeat(3,1fr);gap:24px;align-items:stretch}
@@ -220,7 +239,20 @@ j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNo
   }
   .close:hover{background:var(--bg-alt);color:var(--ink);border-color:var(--line)}
 
-  label{display:block;font-weight:700;color:var(--ink);margin-bottom:6px;font-size:1rem}
+  /* why-we're-asking block */
+  .why{
+    background:var(--accent-tint);border-left:4px solid var(--accent);
+    padding:12px 16px;border-radius:0 var(--radius) var(--radius) 0;
+    font-size:.9375rem;color:var(--ink);margin:0 0 20px;line-height:1.5;
+  }
+  .why b{color:var(--ink)}
+
+  /* ---------- form ---------- */
+  .field{margin-bottom:20px}
+  label,.grp-label{
+    display:block;font-weight:700;color:var(--ink);
+    margin-bottom:8px;font-size:1rem;
+  }
   input[type=email]{
     width:100%;min-height:52px;padding:12px 14px;
     font:inherit;font-size:1.0625rem;color:var(--ink);
@@ -230,25 +262,31 @@ j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNo
   input[type=email]:hover{border-color:var(--muted)}
   input[type=email]:focus{border-color:var(--accent)}
   input[aria-invalid="true"]{border-color:var(--danger)}
-  .err{
-    color:var(--danger);font-size:.9375rem;font-weight:600;
-    margin:8px 0 0;
+
+  .vol-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .vol{
+    display:flex;align-items:center;justify-content:center;
+    min-height:48px;padding:12px 10px;
+    font:inherit;font-size:1rem;font-weight:600;
+    color:var(--accent);background:#fff;
+    border:2px solid var(--line-strong);border-radius:var(--radius);
+    cursor:pointer;
   }
+  .vol:hover{border-color:var(--accent);background:var(--accent-tint)}
+  .vol:active{background:#dbe7f1}
+  .vol[aria-pressed="true"]{
+    background:var(--accent);border-color:var(--accent);color:#fff;
+  }
+  .vol[aria-pressed="true"]:hover{background:var(--accent-dark);border-color:var(--accent-dark)}
+  .vol-opts[data-invalid="true"] .vol{border-color:var(--danger)}
+
+  .err{color:var(--danger);font-size:.9375rem;font-weight:600;margin:8px 0 0}
   .err:empty{display:none}
   .micro{font-size:.875rem;color:var(--muted);margin:12px 0 18px;line-height:1.5}
 
   /* ---------- confirmation ---------- */
   .confirm h2{margin-bottom:.4em}
-  .optional-label{
-    display:inline-block;font-size:.75rem;font-weight:700;letter-spacing:.08em;
-    text-transform:uppercase;color:var(--muted);
-    border:1px solid var(--line-strong);border-radius:3px;padding:3px 8px;margin-bottom:10px;
-  }
-  .vol-q{font-weight:700;color:var(--ink);margin:0 0 4px;font-size:1rem}
-  .vol-skip{font-size:.875rem;color:var(--muted);margin:0 0 14px}
-  .vol-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .vol-opts .btn{padding:12px 10px;font-size:1rem}
-  .thanks{
+  .confirm .final{
     margin:0;padding:14px 16px;background:var(--accent-tint);
     border-left:4px solid var(--accent);border-radius:0 var(--radius) var(--radius) 0;
     color:var(--ink);font-size:1rem;
@@ -257,15 +295,16 @@ j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNo
   /* ---------- footer ---------- */
   footer{
     border-top:1px solid var(--line);background:var(--bg-alt);
-    padding:34px 0;font-size:.9375rem;color:var(--muted);
+    padding:34px 0;font-size:.875rem;color:var(--muted);
   }
-  footer p{margin:0 0 6px}
-  footer .name{font-weight:700;color:var(--ink);font-size:1rem}
+  footer p{margin:0 0 8px;max-width:46em}
+  footer .name{font-weight:700;color:var(--ink);font-size:1rem;margin-bottom:6px}
+  footer .legal{margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+  /* padded so footer links still clear the 44px tap-target minimum */
+  footer a{display:inline-block;padding:11px 0}
+  footer .links{margin-top:2px}
+  footer .links a{margin-right:22px}
 
-  .sr-only{
-    position:absolute;width:1px;height:1px;padding:0;margin:-1px;
-    overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
-  }
 </style>
 </head>
 <body>
@@ -282,77 +321,196 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="wrap">
       <h1>Convert PDF Bank Statements to Excel</h1>
       <p class="sub">
-        For bookkeepers and small practices in Australia. Re-keying a quarter of
-        client statements by hand takes hours you could have billed at your own
-        rate. StatementSheet is being built to do that part for you.
+        You drop in a client's PDF statement and get every transaction back in a
+        spreadsheet that imports straight into Xero. A whole quarter handled in
+        the time it takes to make a coffee, instead of an afternoon of typing.
+        In development — early access is opening in batches.
       </p>
-      <a class="btn" href="#pricing">See pricing and get early access</a>
-      <p class="reassure">
-        Built for CBA, Westpac, NAB and ANZ statements. Exports Xero- and
-        MYOB-ready CSV. No card required.
-      </p>
+
+      <figure class="proof">
+        <p class="proof__hint" aria-hidden="true">Swipe the panel to see what comes back &rarr;</p>
+        <div class="proof__scroll">
+        <svg viewBox="0 0 1000 424" role="img" aria-labelledby="proofTitle proofDesc" xmlns="http://www.w3.org/2000/svg">
+          <title id="proofTitle">Before and after: a PDF bank statement and the same transactions as a spreadsheet</title>
+          <desc id="proofDesc">On the left, a printed bank statement page where each transaction is one dense run-on line of text. On the right, the same fifteen transactions parsed into a spreadsheet with separate Date, Description, Amount and Balance columns, debits shown as negative amounts and a running balance.</desc>
+          <!-- WHAT YOU HAVE: the PDF -->
+          <text x="0" y="16" font-size="12" font-weight="700" letter-spacing="1.2" fill="#5c6773">WHAT YOU HAVE</text>
+          <rect x="0.5" y="26.5" width="451" height="385" fill="#ffffff" stroke="#b9c3cc"/>
+          <rect x="0.5" y="26.5" width="451" height="30" fill="#eef1f4" stroke="#b9c3cc"/>
+          <text x="12" y="46" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#14181d">TRANSACTION LISTING &#8212; ACCOUNT 062-000 1234 5678</text>
+          <rect x="410" y="33" width="32" height="17" rx="2" fill="#5c6773"/>
+          <text x="426" y="45.5" font-size="9" font-weight="700" text-anchor="middle" fill="#ffffff">PDF</text>
+          <text x="12" y="74.0" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">01 JUL EFTPOS WOOLWORTHS 4821 NEWTOWN 84.20 2,140.55</text>
+          <text x="12" y="94.5" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">02 JUL DIRECT DEBIT ORIGIN ENERGY 0419283 212.85 1,927.70</text>
+          <text x="12" y="115.0" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">03 JUL TRANSFER FROM HARPER &amp; CO INV 10428 1,650.00 3,577.70</text>
+          <text x="12" y="135.5" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">05 JUL EFTPOS OFFICEWORKS 2210 ALEXANDRIA 139.95 3,437.75</text>
+          <text x="12" y="156.0" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">08 JUL BPAY ATO ACTIVITY STATEMENT 551 1,284.00 2,153.75</text>
+          <text x="12" y="176.5" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">09 JUL EFTPOS CALTEX 1187 MARRICKVILLE 76.40 2,077.35</text>
+          <text x="12" y="197.0" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">11 JUL DIRECT DEBIT TELSTRA CORP 8820194 99.00 1,978.35</text>
+          <text x="12" y="217.5" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">12 JUL TRANSFER FROM DELANEY TRUST INV 10431 2,420.00 4,398.35</text>
+          <text x="12" y="238.0" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">15 JUL PAYRUN 15072025 STAFF WAGES 3,180.60 1,217.75</text>
+          <text x="12" y="258.5" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">16 JUL XERO SUBSCRIPTION AU 7729104 78.00 1,139.75</text>
+          <text x="12" y="279.0" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">18 JUL EFTPOS WOOLWORTHS 4821 NEWTOWN 62.15 1,077.60</text>
+          <text x="12" y="299.5" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">22 JUL TRANSFER FROM MORELLI PTY LTD INV 10433 3,300.00 4,377.60</text>
+          <text x="12" y="320.0" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">24 JUL DIRECT DEBIT AMP INSURANCE 44029 184.30 4,193.30</text>
+          <text x="12" y="340.5" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">28 JUL EFTPOS OFFICEWORKS 2210 ALEXANDRIA 47.80 4,145.50</text>
+          <text x="12" y="361.0" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">31 JUL ACCOUNT SERVICE FEE 10.00 4,135.50</text>
+          <text x="12" y="390" font-size="9.5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#5c6773">Page 2 of 6 &#8212; continued overleaf</text>
+          <!-- transformation arrow -->
+          <path d="M468 219 H524" stroke="#0f4c81" stroke-width="5" fill="none"/>
+          <path d="M522 208 L540 219 L522 230 Z" fill="#0f4c81"/>
+          <!-- WHAT YOU GET: the spreadsheet -->
+          <text x="548" y="16" font-size="12" font-weight="700" letter-spacing="1.2" fill="#5c6773">WHAT YOU GET</text>
+          <rect x="548.5" y="26.5" width="451" height="385" fill="#ffffff" stroke="#b9c3cc"/>
+          <rect x="548.5" y="26.5" width="451" height="30" fill="#0f4c81"/>
+          <text x="558" y="46" font-size="11" font-weight="700" text-anchor="start" fill="#ffffff">Date</text>
+          <text x="630" y="46" font-size="11" font-weight="700" text-anchor="start" fill="#ffffff">Description</text>
+          <text x="911" y="46" font-size="11" font-weight="700" text-anchor="end" fill="#ffffff">Amount</text>
+          <text x="992" y="46" font-size="11" font-weight="700" text-anchor="end" fill="#ffffff">Balance</text>
+          <text x="558" y="71.8" font-size="10.5" fill="#3c464f">01/07/25</text>
+          <text x="630" y="71.8" font-size="10.5" fill="#14181d">Woolworths Newtown</text>
+          <text x="911" y="71.8" font-size="10.5" text-anchor="end" fill="#a1231b">-84.20</text>
+          <text x="992" y="71.8" font-size="10.5" text-anchor="end" fill="#3c464f">2,140.55</text>
+          <rect x="549" y="79.7" width="450" height="23.7" fill="#f4f6f8"/>
+          <text x="558" y="95.5" font-size="10.5" fill="#3c464f">02/07/25</text>
+          <text x="630" y="95.5" font-size="10.5" fill="#14181d">Origin Energy</text>
+          <text x="911" y="95.5" font-size="10.5" text-anchor="end" fill="#a1231b">-212.85</text>
+          <text x="992" y="95.5" font-size="10.5" text-anchor="end" fill="#3c464f">1,927.70</text>
+          <text x="558" y="119.3" font-size="10.5" fill="#3c464f">03/07/25</text>
+          <text x="630" y="119.3" font-size="10.5" fill="#14181d">Harper &amp; Co - invoice 10428</text>
+          <text x="911" y="119.3" font-size="10.5" text-anchor="end" fill="#14181d">1,650.00</text>
+          <text x="992" y="119.3" font-size="10.5" text-anchor="end" fill="#3c464f">3,577.70</text>
+          <rect x="549" y="127.2" width="450" height="23.7" fill="#f4f6f8"/>
+          <text x="558" y="143.0" font-size="10.5" fill="#3c464f">05/07/25</text>
+          <text x="630" y="143.0" font-size="10.5" fill="#14181d">Officeworks Alexandria</text>
+          <text x="911" y="143.0" font-size="10.5" text-anchor="end" fill="#a1231b">-139.95</text>
+          <text x="992" y="143.0" font-size="10.5" text-anchor="end" fill="#3c464f">3,437.75</text>
+          <text x="558" y="166.7" font-size="10.5" fill="#3c464f">08/07/25</text>
+          <text x="630" y="166.7" font-size="10.5" fill="#14181d">ATO activity statement</text>
+          <text x="911" y="166.7" font-size="10.5" text-anchor="end" fill="#a1231b">-1,284.00</text>
+          <text x="992" y="166.7" font-size="10.5" text-anchor="end" fill="#3c464f">2,153.75</text>
+          <rect x="549" y="174.7" width="450" height="23.7" fill="#f4f6f8"/>
+          <text x="558" y="190.5" font-size="10.5" fill="#3c464f">09/07/25</text>
+          <text x="630" y="190.5" font-size="10.5" fill="#14181d">Caltex Marrickville</text>
+          <text x="911" y="190.5" font-size="10.5" text-anchor="end" fill="#a1231b">-76.40</text>
+          <text x="992" y="190.5" font-size="10.5" text-anchor="end" fill="#3c464f">2,077.35</text>
+          <text x="558" y="214.2" font-size="10.5" fill="#3c464f">11/07/25</text>
+          <text x="630" y="214.2" font-size="10.5" fill="#14181d">Telstra</text>
+          <text x="911" y="214.2" font-size="10.5" text-anchor="end" fill="#a1231b">-99.00</text>
+          <text x="992" y="214.2" font-size="10.5" text-anchor="end" fill="#3c464f">1,978.35</text>
+          <rect x="549" y="222.1" width="450" height="23.7" fill="#f4f6f8"/>
+          <text x="558" y="237.9" font-size="10.5" fill="#3c464f">12/07/25</text>
+          <text x="630" y="237.9" font-size="10.5" fill="#14181d">Delaney Trust - invoice 10431</text>
+          <text x="911" y="237.9" font-size="10.5" text-anchor="end" fill="#14181d">2,420.00</text>
+          <text x="992" y="237.9" font-size="10.5" text-anchor="end" fill="#3c464f">4,398.35</text>
+          <text x="558" y="261.7" font-size="10.5" fill="#3c464f">15/07/25</text>
+          <text x="630" y="261.7" font-size="10.5" fill="#14181d">Payrun - staff wages</text>
+          <text x="911" y="261.7" font-size="10.5" text-anchor="end" fill="#a1231b">-3,180.60</text>
+          <text x="992" y="261.7" font-size="10.5" text-anchor="end" fill="#3c464f">1,217.75</text>
+          <rect x="549" y="269.6" width="450" height="23.7" fill="#f4f6f8"/>
+          <text x="558" y="285.4" font-size="10.5" fill="#3c464f">16/07/25</text>
+          <text x="630" y="285.4" font-size="10.5" fill="#14181d">Xero subscription</text>
+          <text x="911" y="285.4" font-size="10.5" text-anchor="end" fill="#a1231b">-78.00</text>
+          <text x="992" y="285.4" font-size="10.5" text-anchor="end" fill="#3c464f">1,139.75</text>
+          <text x="558" y="309.1" font-size="10.5" fill="#3c464f">18/07/25</text>
+          <text x="630" y="309.1" font-size="10.5" fill="#14181d">Woolworths Newtown</text>
+          <text x="911" y="309.1" font-size="10.5" text-anchor="end" fill="#a1231b">-62.15</text>
+          <text x="992" y="309.1" font-size="10.5" text-anchor="end" fill="#3c464f">1,077.60</text>
+          <rect x="549" y="317.1" width="450" height="23.7" fill="#f4f6f8"/>
+          <text x="558" y="332.9" font-size="10.5" fill="#3c464f">22/07/25</text>
+          <text x="630" y="332.9" font-size="10.5" fill="#14181d">Morelli Pty Ltd - invoice 10433</text>
+          <text x="911" y="332.9" font-size="10.5" text-anchor="end" fill="#14181d">3,300.00</text>
+          <text x="992" y="332.9" font-size="10.5" text-anchor="end" fill="#3c464f">4,377.60</text>
+          <text x="558" y="356.6" font-size="10.5" fill="#3c464f">24/07/25</text>
+          <text x="630" y="356.6" font-size="10.5" fill="#14181d">AMP Insurance</text>
+          <text x="911" y="356.6" font-size="10.5" text-anchor="end" fill="#a1231b">-184.30</text>
+          <text x="992" y="356.6" font-size="10.5" text-anchor="end" fill="#3c464f">4,193.30</text>
+          <rect x="549" y="364.5" width="450" height="23.7" fill="#f4f6f8"/>
+          <text x="558" y="380.3" font-size="10.5" fill="#3c464f">28/07/25</text>
+          <text x="630" y="380.3" font-size="10.5" fill="#14181d">Officeworks Alexandria</text>
+          <text x="911" y="380.3" font-size="10.5" text-anchor="end" fill="#a1231b">-47.80</text>
+          <text x="992" y="380.3" font-size="10.5" text-anchor="end" fill="#3c464f">4,145.50</text>
+          <text x="558" y="404.1" font-size="10.5" fill="#3c464f">31/07/25</text>
+          <text x="630" y="404.1" font-size="10.5" fill="#14181d">Account service fee</text>
+          <text x="911" y="404.1" font-size="10.5" text-anchor="end" fill="#a1231b">-10.00</text>
+          <text x="992" y="404.1" font-size="10.5" text-anchor="end" fill="#3c464f">4,135.50</text>
+          <g stroke="#d8dee4" stroke-width="1">
+            <path d="M549 79.7 H999"/>
+            <path d="M549 103.5 H999"/>
+            <path d="M549 127.2 H999"/>
+            <path d="M549 150.9 H999"/>
+            <path d="M549 174.7 H999"/>
+            <path d="M549 198.4 H999"/>
+            <path d="M549 222.1 H999"/>
+            <path d="M549 245.9 H999"/>
+            <path d="M549 269.6 H999"/>
+            <path d="M549 293.3 H999"/>
+            <path d="M549 317.1 H999"/>
+            <path d="M549 340.8 H999"/>
+            <path d="M549 364.5 H999"/>
+            <path d="M549 388.3 H999"/>
+            <path d="M620.5 56 V411"/>
+            <path d="M838.5 56 V411"/>
+            <path d="M919.5 56 V411"/>
+          </g>
+          <rect x="548.5" y="26.5" width="451" height="385" fill="none" stroke="#b9c3cc"/>
+        </svg>
+        </div>
+        <figcaption>
+          An illustration of the intended output, not a screenshot of a working
+          product. Being built for CBA, Westpac, NAB and ANZ statement formats,
+          with the columns mapped to what Xero and MYOB expect on import.
+        </figcaption>
+      </figure>
+
+      <a class="btn" href="#pricing">Get early access</a>
+      <p class="reassure">No card required. No payment today.</p>
     </div>
   </section>
 
-  <!-- ============ 2. THE PROBLEM ============ -->
-  <section class="alt">
-    <div class="wrap">
-      <h2>Where the month-end hours go</h2>
-      <div class="grid3">
-        <div class="item">
-          <h3>Manual re-keying</h3>
-          <p>
-            One client's quarter can run to several hundred transaction lines.
-            You type every one of them, then you read back every one of them.
-          </p>
-        </div>
-        <div class="item">
-          <h3>Transposition errors</h3>
-          <p>
-            A swapped digit doesn't announce itself in April. It shows up when
-            reconciliation won't balance, and then you're hunting for it.
-          </p>
-        </div>
-        <div class="item">
-          <h3>The BAS-quarter crunch</h3>
-          <p>
-            Every client wants the same thing in the same fortnight. Data entry
-            is what eats the week you needed for the actual work.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ 3. HOW IT WORKS ============ -->
+  <!-- ============ 2. THREE OBJECTIONS ============ -->
   <section>
     <div class="wrap">
-      <h2>How StatementSheet will work</h2>
-      <div class="grid3">
-        <div class="item step">
-          <span class="num">Step 1</span>
-          <h3>Upload the PDF</h3>
-          <p>You add the bank statement PDF exactly as the bank issued it.</p>
+      <h2>Three things you're probably wondering</h2>
+      <div class="qs">
+
+        <div>
+          <h3>Will it actually read my clients' statements properly?</h3>
+          <p>
+            That is the whole product, and it's why we aren't taking payment yet.
+            It's being built against real CBA, Westpac, NAB and ANZ layouts —
+            including the multi-page ones where the balance column drifts halfway
+            down and long descriptions wrap onto a second line. If it can't be
+            trusted line for line, it isn't worth selling to a bookkeeper.
+          </p>
         </div>
-        <div class="item step">
-          <span class="num">Step 2</span>
-          <h3>Claude reads the transactions</h3>
-          <p>Claude reads each line — date, description, amount, balance — and puts it in order.</p>
+
+        <div>
+          <h3>What happens to my clients' financial data?</h3>
+          <p>
+            Nothing goes anywhere today. There is no upload on this page, and no
+            way to send us a statement even if you wanted to. We won't ask you
+            for a client statement until the product is live and you've read how
+            files are handled. The only thing collected right now is an email
+            address.
+          </p>
         </div>
-        <div class="item step">
-          <span class="num">Step 3</span>
-          <h3>Download a clean CSV</h3>
-          <p>You download a CSV already mapped to the columns Xero and MYOB expect.</p>
+
+        <div>
+          <h3>It isn't finished, so what am I actually signing up for?</h3>
+          <p>
+            A place in the first group of accounts, and the price above held for
+            twelve months from the day you get access. You're not paying, not
+            committing to anything, and not being added to a marketing list. If
+            you've changed your mind by the time our email arrives, ignore it.
+          </p>
         </div>
+
       </div>
-      <p class="note">
-        This is the product we are building. It is not available to use yet —
-        early access members will be the first in.
-      </p>
     </div>
   </section>
 
-  <!-- ============ 4. PRICING ============ -->
+  <!-- ============ 3. PRICING ============ -->
   <section id="pricing" class="alt">
     <div class="wrap">
       <h2>Early access pricing</h2>
@@ -409,20 +567,37 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 </main>
 
-<!-- ============ 7. FOOTER ============ -->
+<!-- ============ 4. FOOTER ============ -->
 <footer>
   <div class="wrap">
     <p class="name">StatementSheet</p>
     <p>StatementSheet is in development and is not yet available to use.</p>
-    <p><a href="/privacy">Privacy</a></p>
+
+    <div class="legal">
+      <p>
+        Prices shown are indicative early access pricing in Australian dollars.
+        They are not an offer to sell, and no payment is collected on this page.
+      </p>
+      <p>
+        We use your email address only to contact you about early access. We do
+        not sell it or pass it to third parties. Reply to any email from us and
+        we'll remove you.
+      </p>
+      <!-- PLACEHOLDERS: insert the registered ABN and the real contact address -->
+      <p>
+        ABN [ABN_PLACEHOLDER] &middot;
+        <a href="mailto:[CONTACT_EMAIL_PLACEHOLDER]">[CONTACT_EMAIL_PLACEHOLDER]</a>
+      </p>
+      <p class="links"><a href="/privacy">Privacy</a><a href="/terms">Terms</a></p>
+    </div>
   </div>
 </footer>
 
-<!-- ============ 5 + 6. EMAIL CAPTURE / CONFIRMATION MODAL ============ -->
+<!-- ============ 5. EMAIL CAPTURE / CONFIRMATION MODAL ============ -->
 <div class="overlay" id="overlay" hidden>
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" id="modal">
 
-    <!-- Step two: email capture -->
+    <!-- Step two: volume + email capture -->
     <div id="captureView">
       <button class="close" type="button" id="closeBtn" aria-label="Close">&times;</button>
       <h2 id="modalTitle">Save your spot</h2>
@@ -430,12 +605,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         Plan selected: <b id="planName">Practice</b> <span id="planPrice"></span>
       </p>
 
+      <p class="why">
+        <b>Why we're asking:</b> early access members go into the first group of
+        accounts when they open, and keep this price for twelve months from the
+        day access starts.
+      </p>
+
       <form id="signupForm" novalidate>
-        <label for="email">Your email address</label>
-        <input type="email" id="email" name="email" autocomplete="email"
-               inputmode="email" spellcheck="false"
-               aria-describedby="emailMicro" placeholder="you@yourpractice.com.au">
-        <p class="err" id="emailError" role="alert"></p>
+
+        <div class="field">
+          <span class="grp-label" id="volLabel">How many client bank statements a month?</span>
+          <div class="vol-opts" role="group" aria-labelledby="volLabel" id="volGroup">
+            <button class="vol" type="button" data-volume="1-20"   aria-pressed="false">1&ndash;20</button>
+            <button class="vol" type="button" data-volume="21-100" aria-pressed="false">21&ndash;100</button>
+            <button class="vol" type="button" data-volume="101-500" aria-pressed="false">101&ndash;500</button>
+            <button class="vol" type="button" data-volume="500+"   aria-pressed="false">500+</button>
+          </div>
+          <p class="err" id="volumeError" role="alert"></p>
+        </div>
+
+        <div class="field">
+          <label for="email">Your email address</label>
+          <input type="email" id="email" name="email" autocomplete="email"
+                 inputmode="email" spellcheck="false"
+                 aria-describedby="emailMicro" placeholder="you@yourpractice.com.au">
+          <p class="err" id="emailError" role="alert"></p>
+        </div>
 
         <p class="micro" id="emailMicro">
           We're opening access in batches and will email you when your spot is
@@ -452,26 +647,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <button class="close" type="button" id="closeBtn2" aria-label="Close">&times;</button>
       <h2 id="confirmTitle" tabindex="-1">Your spot is saved</h2>
       <p>
-        We've got your email. When early access opens for the
-        <b id="confirmPlan">Practice</b> plan, we'll be in touch with your
-        sign-in details. Nothing is charged before then.
+        When early access opens for the <b id="confirmPlan">Practice</b> plan,
+        we'll be in touch with your sign-in details. Nothing is charged before
+        then.
       </p>
-
-      <div id="volumeBlock">
-        <hr style="border:0;border-top:1px solid var(--line);margin:22px 0 18px">
-        <span class="optional-label">Optional</span>
-        <p class="vol-q">Roughly how many client bank statements do you process a month?</p>
-        <p class="vol-skip">Your spot is already saved — skipping this changes nothing.</p>
-        <div class="vol-opts">
-          <button class="btn btn--quiet" type="button" data-volume="1-20">1&ndash;20</button>
-          <button class="btn btn--quiet" type="button" data-volume="21-100">21&ndash;100</button>
-          <button class="btn btn--quiet" type="button" data-volume="101-500">101&ndash;500</button>
-          <button class="btn btn--quiet" type="button" data-volume="500+">500+</button>
-        </div>
-      </div>
-
-      <p class="thanks" id="volumeThanks" hidden tabindex="-1">
-        Thanks — that helps us decide what to build first. You're all set.
+      <p class="final">
+        There's nothing else to do — we'll email you at
+        <b id="confirmEmail"></b>.
       </p>
     </div>
 
@@ -490,21 +672,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   var captureView  = document.getElementById('captureView');
   var confirmView  = document.getElementById('confirmView');
   var form         = document.getElementById('signupForm');
+  var volGroup     = document.getElementById('volGroup');
+  var volButtons   = volGroup.querySelectorAll('[data-volume]');
+  var volumeError  = document.getElementById('volumeError');
   var emailInput   = document.getElementById('email');
   var emailError   = document.getElementById('emailError');
   var submitBtn    = document.getElementById('submitBtn');
   var planName     = document.getElementById('planName');
   var planPrice    = document.getElementById('planPrice');
   var confirmPlan  = document.getElementById('confirmPlan');
+  var confirmEmail = document.getElementById('confirmEmail');
   var confirmTitle = document.getElementById('confirmTitle');
-  var volumeBlock  = document.getElementById('volumeBlock');
-  var volumeThanks = document.getElementById('volumeThanks');
 
   var selectedPlan = '';
-  var submittedEmail = '';
+  var selectedVolume = '';
   var lastFocused = null;
 
   /* ---------- modal open / close ---------- */
+
+  function resetVolume() {
+    selectedVolume = '';
+    Array.prototype.forEach.call(volButtons, function (b) {
+      b.setAttribute('aria-pressed', 'false');
+    });
+    clearVolumeError();
+  }
 
   function openModal(plan, price, trigger) {
     selectedPlan = plan;
@@ -514,16 +706,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     planPrice.textContent = price ? '— ' + price : '';
     confirmPlan.textContent = plan;
 
-    /* Reopening after a previous success starts clean. */
+    /* Reopening always starts clean, including the volume selection. */
     captureView.hidden = false;
     confirmView.hidden = true;
-    volumeBlock.hidden = false;
-    volumeThanks.hidden = true;
-    clearError();
+    resetVolume();
+    clearEmailError();
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Save my spot';
 
     overlay.hidden = false;
     document.body.style.overflow = 'hidden';
-    emailInput.focus();
+    volButtons[0].focus();
   }
 
   function closeModal() {
@@ -589,23 +782,46 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     });
   });
 
-  /* ---------- validation ---------- */
+  /* ---------- volume: exclusive single-select ---------- */
+
+  Array.prototype.forEach.call(volButtons, function (btn) {
+    btn.addEventListener('click', function () {
+      selectedVolume = btn.getAttribute('data-volume');
+      Array.prototype.forEach.call(volButtons, function (b) {
+        b.setAttribute('aria-pressed', String(b === btn));
+      });
+      clearVolumeError();
+    });
+  });
+
+  function showVolumeError() {
+    volumeError.textContent = 'Please pick a range so we know which group to put you in.';
+    volGroup.setAttribute('data-invalid', 'true');
+    volButtons[0].focus();
+  }
+
+  function clearVolumeError() {
+    volumeError.textContent = '';
+    volGroup.removeAttribute('data-invalid');
+  }
+
+  /* ---------- email validation ---------- */
 
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-  function showError(msg) {
+  function showEmailError(msg) {
     emailError.textContent = msg;
     emailInput.setAttribute('aria-invalid', 'true');
     emailInput.focus();   /* never clears what was typed */
   }
 
-  function clearError() {
+  function clearEmailError() {
     emailError.textContent = '';
     emailInput.removeAttribute('aria-invalid');
   }
 
   emailInput.addEventListener('input', function () {
-    if (emailError.textContent) clearError();
+    if (emailError.textContent) clearEmailError();
   });
 
   /* ---------- submit ---------- */
@@ -613,37 +829,52 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   form.addEventListener('submit', function (e) {
     e.preventDefault();
 
+    /* Volume is validated first — it sits above the email field. */
+    if (!selectedVolume) {
+      showVolumeError();
+      return;
+    }
+
     var value = emailInput.value.trim();
 
     if (!value) {
-      showError('Please enter your email address so we know where to send your spot.');
+      showEmailError('Please enter your email address so we know where to send your spot.');
       return;
     }
     if (!EMAIL_RE.test(value)) {
-      showError('That email address doesn’t look right. Please check it and try again.');
+      showEmailError('That email address doesn’t look right. Please check it and try again.');
       return;
     }
 
-    clearError();
+    clearEmailError();
     submitBtn.disabled = true;
     submitBtn.textContent = 'Saving…';
 
+    /* One submission carrying email, plan and volume together. */
     fetch(FORMSPREE_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({ email: value, plan: selectedPlan })
+      body: JSON.stringify({
+        email: value,
+        plan: selectedPlan,
+        monthly_statement_volume: selectedVolume
+      })
     })
       .then(function (res) {
         if (!res.ok) throw new Error('Request failed with status ' + res.status);
         return res;
       })
       .then(function () {
-        submittedEmail = value;
-
-        /* Conversion event — this is what the Google Ads trigger listens for. */
+        /* One conversion event, carrying both parameters. This is what the
+           Google Ads conversion trigger listens for. */
         window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({ event: 'signup_success', plan: selectedPlan });
+        window.dataLayer.push({
+          event: 'signup_success',
+          plan: selectedPlan,
+          volume: selectedVolume
+        });
 
+        confirmEmail.textContent = value;
         captureView.hidden = true;
         confirmView.hidden = false;
         confirmTitle.focus();
@@ -651,37 +882,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       .catch(function () {
         submitBtn.disabled = false;
         submitBtn.textContent = 'Save my spot';
-        showError('We couldn’t save your spot just then — please check your connection and press Save my spot again. Your email is still here.');
+        showEmailError('We couldn’t save your spot just then — please check your connection and press Save my spot again. Your details are still here.');
       });
-  });
-
-  /* ---------- optional volume question ---------- */
-
-  Array.prototype.forEach.call(confirmView.querySelectorAll('[data-volume]'), function (btn) {
-    btn.addEventListener('click', function () {
-      var selectedRange = btn.getAttribute('data-volume');
-
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({ event: 'volume_answered', volume: selectedRange });
-
-      /* Optional: also store the answer against the signup. Delete these
-         lines if you'd rather keep Formspree to one entry per person.
-         Failure here is deliberately silent — the conversion is already
-         recorded and this answer is a nice-to-have. */
-      fetch(FORMSPREE_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({
-          email: submittedEmail,
-          plan: selectedPlan,
-          monthly_statement_volume: selectedRange
-        })
-      }).catch(function () {});
-
-      volumeBlock.hidden = true;
-      volumeThanks.hidden = false;
-      volumeThanks.focus();
-    });
   });
 })();
 </script>
