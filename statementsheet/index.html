@@ -5,35 +5,36 @@
   StatementSheet — Google Ads validation landing page
   ============================================================================
 
-  DONE: Formspree endpoint is configured (form mrpgndgq).
+  ALREADY CONFIGURED — do not search for these, they are real values:
+    Formspree endpoint   form mrpgndgq
+    ABN                  79 395 679 698
+    Effective date       15 September 2026
 
-  PLACEHOLDERS STILL TO SWAP (8 items — search for each string):
+  PLACEHOLDERS STILL TO SWAP (6 items — search for each string):
 
   1. GTM-PLACEHOLDER      GTM container ID.
-                          Appears 2x:  <head> container snippet
-                                       <body> noscript iframe
+                          Appears 2x in index.html: the <head> container
+                          snippet and the <body> noscript iframe.
+                          The legal pages carry no GTM.
 
   2. StatementSheet       Product name.
-                          Appears 3x: <title>, footer business name, and the
-                          footer "is in development" line.
+                          index.html 3x: <title>, footer business name, and
+                          the footer "is in development" line.
+                          Also throughout privacy.html and terms.html.
 
-  3. statementsheet.com.au  Domain.
-                          Appears in: footer business line. (The <title> does
-                          not use it.)
+  3. statementsheet.com.au  Domain. Footer business line.
 
-  4. [ABN_PLACEHOLDER]    Registered ABN. Appears 1x in the footer.
+  4. [CONTACT_EMAIL_PLACEHOLDER]  Contact address.
+                          index.html 2x (mailto: href + visible text),
+                          privacy.html 6x, terms.html 2x.
 
-  5. [CONTACT_EMAIL_PLACEHOLDER]  Contact address. Appears 2x in the footer,
-                          as the mailto: href and as the visible text.
+  5. [LEGAL_ENTITY_PLACEHOLDER]   Registered entity behind the trading name,
+                          e.g. "J Smith Pty Ltd" or "Jane Smith trading as
+                          StatementSheet". privacy.html 3x, terms.html 3x.
+                          Not used in index.html.
 
-  6. [LEGAL_ENTITY_PLACEHOLDER]   Registered entity behind the trading name.
-                          Appears in privacy.html and terms.html only.
-
-  7. [STATE_PLACEHOLDER]  State/territory governing the terms.
-                          Appears 1x in terms.html.
-
-  8. [EFFECTIVE_DATE_PLACEHOLDER]  Date the policy and terms take effect.
-                          Appears 1x each in privacy.html and terms.html.
+  6. [STATE_PLACEHOLDER]  State/territory governing the terms.
+                          terms.html 2x. Not used in index.html.
 
   DEPLOY ALL THREE FILES TOGETHER:
   index.html, privacy.html and terms.html. The footer links are relative,
@@ -579,9 +580,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         not sell it or pass it to third parties. Reply to any email from us and
         we'll remove you.
       </p>
-      <!-- PLACEHOLDERS: insert the registered ABN and the real contact address -->
+      <!-- PLACEHOLDER: insert the real contact address (ABN is set) -->
       <p>
-        ABN [ABN_PLACEHOLDER] &middot;
+        ABN 79 395 679 698 &middot;
         <a href="mailto:[CONTACT_EMAIL_PLACEHOLDER]">[CONTACT_EMAIL_PLACEHOLDER]</a>
       </p>
       <p class="links"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></p>
