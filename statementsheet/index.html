@@ -143,6 +143,13 @@ j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNo
   .hero .reassure{
     font-size:.9375rem;color:var(--muted);margin:1rem 0 0;max-width:38em;
   }
+  .hero .feature{
+    font-size:1.0625rem;color:var(--ink);max-width:38em;
+    background:var(--accent-tint);border-left:4px solid var(--accent);
+    padding:14px 18px;border-radius:0 var(--radius) var(--radius) 0;
+    margin:0 0 1.75rem;
+  }
+  .hero .feature b{color:var(--ink)}
 
   /* ---------- hero proof graphic ---------- */
   .proof{margin:0 0 2rem;padding:0}
@@ -335,6 +342,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         Built for Australian professionals who handle other people's documents.
       </p>
 
+      <p class="feature">
+        <b>Redact the same things once, not every time.</b> Save the names,
+        account numbers and ID formats you black out every day, and have them
+        caught across a whole document set in one pass.
+      </p>
+
       <figure class="proof">
         <p class="proof__hint" aria-hidden="true">Swipe the panel to see the difference &rarr;</p>
         <div class="proof__scroll">
@@ -389,9 +402,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <figcaption>
           An illustration of the intended behaviour, not a screenshot of a
           working product. It removes the underlying text and the document
-          metadata rather than covering them over, and is being built for the
-          PDFs you actually get — scanned, exported from other software, and
-          generated.
+          metadata rather than covering them over. On a scanned PDF there is no
+          text layer to strip, so it removes the image data underneath the mark
+          instead — see below.
         </figcaption>
       </figure>
 
@@ -403,7 +416,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- ============ 2. THREE OBJECTIONS ============ -->
   <section>
     <div class="wrap">
-      <h2>Three things you're probably wondering</h2>
+      <h2>Four things you're probably wondering</h2>
       <div class="qs">
 
         <div>
@@ -415,6 +428,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             redaction — which looks identical on screen. This removes the text,
             the image data underneath it, and the document metadata, so there
             is nothing left to recover.
+          </p>
+        </div>
+
+        <div>
+          <h3>Does it work on scanned documents?</h3>
+          <p>
+            Yes, and it's worth knowing how, because scans behave differently.
+            A scan is a picture — there is no text layer underneath the mark, so
+            there is nothing to strip. What matters is that the image data under
+            the mark is destroyed rather than painted over, and that's what this
+            does. Where a scan has already been put through OCR and does carry a
+            searchable text layer, that text is removed as well.
           </p>
         </div>
 
@@ -455,7 +480,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <p class="price"><b>$29</b><span>/month AUD</span></p>
           <p class="who">For an individual professional.</p>
           <ul>
-            <li>100 pages a month</li>
+            <li>50 documents a month</li>
             <li>1 user</li>
             <li>Text and metadata removed, not covered</li>
           </ul>
@@ -468,9 +493,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <p class="price"><b>$79</b><span>/month AUD</span></p>
           <p class="who">For a small team handling documents every week.</p>
           <ul>
-            <li>500 pages a month</li>
+            <li>300 documents a month</li>
             <li>3 users</li>
             <li>Saved redaction patterns</li>
+            <li>Audit log and redaction record</li>
           </ul>
           <button class="btn btn--block" type="button" data-plan="Practice" data-price="$79/month">Get early access</button>
         </div>
@@ -478,18 +504,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="tier">
           <h3>Firm</h3>
           <p class="price"><b>$199</b><span>/month AUD</span></p>
-          <p class="who">For a firm that has to show its working.</p>
+          <p class="who">For a firm working at volume, with one shared set of rules.</p>
           <ul>
-            <li>Unlimited pages</li>
+            <li>Unlimited documents</li>
             <li>10 users</li>
-            <li>Audit log and redaction record</li>
+            <li>Shared pattern library for the team</li>
+            <li>Priority support</li>
           </ul>
           <button class="btn btn--block" type="button" data-plan="Firm" data-price="$199/month">Get early access</button>
         </div>
 
       </div>
 
-      <p class="gst">All prices in Australian dollars, GST inclusive.</p>
+      <p class="gst">
+        A document is one file, however many pages it runs to. Each plan
+        includes everything in the plan below it. All prices in Australian
+        dollars, GST inclusive.
+      </p>
 
       <div class="locked">
         <p>Founding pricing is locked for 12 months for early access members.</p>
