@@ -2,48 +2,59 @@
 <html lang="en-AU">
 <!--
   ============================================================================
-  StatementSheet — Google Ads validation landing page
+  RedactReady — Google Ads validation landing page
   ============================================================================
+
+  WHAT THIS IS
+  A validation test for a PDF redaction tool that does not exist yet. The
+  page's only job is to find out whether people will pick a price and give
+  an email address. Traffic arrives on ten redaction keywords; the H1 is
+  "PDF Redaction Tool" verbatim for message match — never reword it.
+
+  REVISED FROM a bank-statement-to-Excel page. Same machinery, new product:
+  new hero copy and proof graphic, new objections, new pricing, and the form
+  qualifier changed from monthly volume to what the person mainly redacts.
+  The modal, focus trap, validation, Formspree POST and GTM push are
+  unchanged in mechanism.
 
   ALREADY CONFIGURED — do not search for these, they are real values:
     Formspree endpoint   form mrpgndgq
     ABN                  79 395 679 698
-    Effective date       15 September 2026
     Contact address      francismike8384@gmail.com
-    Governing law        New South Wales
-    Operator             StatementSheet (ABN only — no separate entity named)
 
   PLACEHOLDERS STILL TO SWAP (3 items — search for each string):
 
   1. GTM-PLACEHOLDER      GTM container ID.
-                          Appears 2x in index.html: the <head> container
-                          snippet and the <body> noscript iframe.
-                          The legal pages carry no GTM.
+                          Appears 2x: the <head> container snippet and the
+                          <body> noscript iframe.
 
-  2. StatementSheet       Product name.
-                          index.html 3x: <title>, footer business name, and
-                          the footer "is in development" line.
-                          Also throughout privacy.html and terms.html.
+  2. RedactReady          Product name.
+                          <title>, meta description, footer business name,
+                          and the footer "is in development" line.
 
-  3. statementsheet.com.au  Domain. Footer business line.
+  3. redactready.com.au   Domain. Footer business line.
 
-  DEPLOY ALL THREE FILES TOGETHER:
-  index.html, privacy.html and terms.html. The footer links are relative,
-  so they work on any host and when opened straight from disk. Google Ads
-  requires a reachable privacy policy on any page collecting emails.
+  !! STALE: privacy.html and terms.html still describe StatementSheet, the
+     previous product, and their effective date is 15 September 2026. They
+     must be rewritten for RedactReady before this page goes near an ad —
+     the footer links to both, and a redaction page linking to a
+     bank-statement privacy policy will not survive review.
 
   This page intentionally contains: no navigation, no social proof, no file
-  upload, no payment step, no external CSS/JS/fonts. Do not add any.
-  The hero before/after graphic is hand-written inline SVG, not an image
-  file — it makes no network request. The only two requests this page makes
-  are the GTM container and the Formspree POST.
+  upload, no payment step, no external CSS/JS/fonts. Do not add any. People
+  arriving here handle other people's private documents; there is nowhere on
+  this page to send us one, deliberately.
+
+  The hero graphic is hand-written inline SVG, not an image file. The only
+  two network requests this page makes are the GTM container and the
+  Formspree POST.
   ============================================================================
 -->
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Convert PDF Bank Statements to Excel | StatementSheet</title>
-<meta name="description" content="A tool in development for Australian bookkeepers: turn PDF bank statements into Xero- and MYOB-ready CSV instead of re-keying them by hand. Join the early access list.">
+<title>PDF Redaction Tool | RedactReady</title>
+<meta name="description" content="A redaction tool in development for Australian professionals: removes the text and metadata underneath the black box instead of covering it up. Join the early access list.">
 <meta name="robots" content="noindex">
 
 <!-- Google Tag Manager — REPLACE GTM-PLACEHOLDER with the real container ID -->
@@ -125,12 +136,16 @@ j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNo
   /* ---------- hero ---------- */
   .hero{padding-top:44px;border-bottom:1px solid var(--line)}
   @media (min-width:720px){.hero{padding-top:72px}}
+  .hero p.sub{
+    font-size:clamp(1.0625rem,2.3vw,1.3125rem);
+    max-width:38em;margin:0 0 1.5rem;color:var(--body);
+  }
   .hero .reassure{
     font-size:.9375rem;color:var(--muted);margin:1rem 0 0;max-width:38em;
   }
 
   /* ---------- hero proof graphic ---------- */
-  .proof{margin:1.75rem 0 2rem;padding:0}
+  .proof{margin:0 0 2rem;padding:0}
   .proof__scroll{
     overflow-x:auto;
     -webkit-overflow-scrolling:touch;
@@ -139,7 +154,7 @@ j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNo
   .proof svg{
     display:block;
     width:100%;height:auto;
-    min-width:660px;          /* keeps the rows legible; scrolls on a phone */
+    min-width:640px;          /* keeps the panels legible; scrolls on a phone */
   }
   .proof figcaption{
     font-size:.875rem;color:var(--muted);
@@ -234,7 +249,6 @@ j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNo
   }
   .close:hover{background:var(--bg-alt);color:var(--ink);border-color:var(--line)}
 
-  /* why-we're-asking block */
   .why{
     background:var(--accent-tint);border-left:4px solid var(--accent);
     padding:12px 16px;border-radius:0 var(--radius) var(--radius) 0;
@@ -258,22 +272,23 @@ j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNo
   input[type=email]:focus{border-color:var(--accent)}
   input[aria-invalid="true"]{border-color:var(--danger)}
 
-  .vol-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .vol{
-    display:flex;align-items:center;justify-content:center;
-    min-height:48px;padding:12px 10px;
-    font:inherit;font-size:1rem;font-weight:600;
+  .role-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .role-opts .role:last-child{grid-column:1 / -1}  /* 5th option spans the row */
+  .role{
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    min-height:48px;padding:10px 8px;
+    font:inherit;font-size:.9375rem;font-weight:600;line-height:1.25;
     color:var(--accent);background:#fff;
     border:2px solid var(--line-strong);border-radius:var(--radius);
     cursor:pointer;
   }
-  .vol:hover{border-color:var(--accent);background:var(--accent-tint)}
-  .vol:active{background:#dbe7f1}
-  .vol[aria-pressed="true"]{
+  .role:hover{border-color:var(--accent);background:var(--accent-tint)}
+  .role:active{background:#dbe7f1}
+  .role[aria-pressed="true"]{
     background:var(--accent);border-color:var(--accent);color:#fff;
   }
-  .vol[aria-pressed="true"]:hover{background:var(--accent-dark);border-color:var(--accent-dark)}
-  .vol-opts[data-invalid="true"] .vol{border-color:var(--danger)}
+  .role[aria-pressed="true"]:hover{background:var(--accent-dark);border-color:var(--accent-dark)}
+  .role-opts[data-invalid="true"] .role{border-color:var(--danger)}
 
   .err{color:var(--danger);font-size:.9375rem;font-weight:600;margin:8px 0 0}
   .err:empty{display:none}
@@ -299,7 +314,6 @@ j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNo
   footer a{display:inline-block;padding:11px 0}
   footer .links{margin-top:2px}
   footer .links a{margin-right:22px}
-
 </style>
 </head>
 <body>
@@ -314,140 +328,70 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- ============ 1. HERO ============ -->
   <section class="hero">
     <div class="wrap">
-      <h1>Convert PDF Bank Statements to Excel</h1>
+      <h1>PDF Redaction Tool</h1>
+      <p class="sub">
+        Black out a name, an account number or an address and have it actually
+        gone — not hidden under a rectangle anyone can select, copy or recover.
+        Built for Australian professionals who handle other people's documents.
+      </p>
+
       <figure class="proof">
-        <p class="proof__hint" aria-hidden="true">Swipe the panel to see what comes back &rarr;</p>
+        <p class="proof__hint" aria-hidden="true">Swipe the panel to see the difference &rarr;</p>
         <div class="proof__scroll">
-        <svg viewBox="0 0 1000 424" role="img" aria-labelledby="proofTitle proofDesc" xmlns="http://www.w3.org/2000/svg">
-          <title id="proofTitle">Before and after: a PDF bank statement and the same transactions as a spreadsheet</title>
-          <desc id="proofDesc">On the left, a printed bank statement page where each transaction is one dense run-on line of text. On the right, the same fifteen transactions parsed into a spreadsheet with separate Date, Description, Amount and Balance columns, debits shown as negative amounts and a running balance.</desc>
-          <!-- WHAT YOU HAVE: the PDF -->
-          <text x="0" y="16" font-size="12" font-weight="700" letter-spacing="1.2" fill="#5c6773">WHAT YOU HAVE</text>
-          <rect x="0.5" y="26.5" width="451" height="385" fill="#ffffff" stroke="#b9c3cc"/>
-          <rect x="0.5" y="26.5" width="451" height="30" fill="#eef1f4" stroke="#b9c3cc"/>
-          <text x="12" y="46" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#14181d">TRANSACTION LISTING &#8212; ACCOUNT 062-000 1234 5678</text>
-          <rect x="410" y="33" width="32" height="17" rx="2" fill="#5c6773"/>
-          <text x="426" y="45.5" font-size="9" font-weight="700" text-anchor="middle" fill="#ffffff">PDF</text>
-          <text x="12" y="74.0" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">01 JUL EFTPOS WOOLWORTHS 4821 NEWTOWN 84.20 2,140.55</text>
-          <text x="12" y="94.5" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">02 JUL DIRECT DEBIT ORIGIN ENERGY 0419283 212.85 1,927.70</text>
-          <text x="12" y="115.0" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">03 JUL TRANSFER FROM HARPER &amp; CO INV 10428 1,650.00 3,577.70</text>
-          <text x="12" y="135.5" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">05 JUL EFTPOS OFFICEWORKS 2210 ALEXANDRIA 139.95 3,437.75</text>
-          <text x="12" y="156.0" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">08 JUL BPAY ATO ACTIVITY STATEMENT 551 1,284.00 2,153.75</text>
-          <text x="12" y="176.5" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">09 JUL EFTPOS CALTEX 1187 MARRICKVILLE 76.40 2,077.35</text>
-          <text x="12" y="197.0" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">11 JUL DIRECT DEBIT TELSTRA CORP 8820194 99.00 1,978.35</text>
-          <text x="12" y="217.5" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">12 JUL TRANSFER FROM DELANEY TRUST INV 10431 2,420.00 4,398.35</text>
-          <text x="12" y="238.0" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">15 JUL PAYRUN 15072025 STAFF WAGES 3,180.60 1,217.75</text>
-          <text x="12" y="258.5" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">16 JUL XERO SUBSCRIPTION AU 7729104 78.00 1,139.75</text>
-          <text x="12" y="279.0" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">18 JUL EFTPOS WOOLWORTHS 4821 NEWTOWN 62.15 1,077.60</text>
-          <text x="12" y="299.5" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">22 JUL TRANSFER FROM MORELLI PTY LTD INV 10433 3,300.00 4,377.60</text>
-          <text x="12" y="320.0" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">24 JUL DIRECT DEBIT AMP INSURANCE 44029 184.30 4,193.30</text>
-          <text x="12" y="340.5" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">28 JUL EFTPOS OFFICEWORKS 2210 ALEXANDRIA 47.80 4,145.50</text>
-          <text x="12" y="361.0" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#3c464f">31 JUL ACCOUNT SERVICE FEE 10.00 4,135.50</text>
-          <text x="12" y="390" font-size="9.5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#5c6773">Page 2 of 6 &#8212; continued overleaf</text>
+        <svg viewBox="0 0 1000 400" role="img" aria-labelledby="proofTitle proofDesc" xmlns="http://www.w3.org/2000/svg">
+          <title id="proofTitle">Two panels: a document with black boxes whose text is still recoverable, and the same document properly redacted</title>
+          <desc id="proofDesc">On the left, a statement with black rectangles drawn over the account number and tax file number. Below it, a panel showing that selecting the text still returns the account number in full, because the black rectangle only covers it. On the right, the same document with the same black bars, but selecting the text returns nothing — the underlying text has been removed from the file and the document metadata stripped.</desc>
+          <!-- THE BLACK BOX TRICK -->
+          <text x="0" y="15" font-size="12" font-weight="700" letter-spacing="1.2" fill="#5c6773">THE BLACK BOX TRICK</text>
+          <rect x="0.5" y="26.5" width="439" height="228" fill="#ffffff" stroke="#b9c3cc"/>
+          <rect x="0.5" y="26.5" width="439" height="30" fill="#eef1f4" stroke="#b9c3cc"/>
+          <text x="16" y="46" font-size="11" font-weight="700" letter-spacing="1" fill="#14181d">STATEMENT OF ACCOUNT</text>
+          <text x="16" y="82" font-size="12.5" fill="#3c464f">Ms Danielle Kwan</text>
+          <text x="16" y="110" font-size="12.5" fill="#3c464f">14 Rosslyn Street, Fitzroy VIC 3065</text>
+          <text x="16" y="138" font-size="12.5" fill="#5c6773">Account name:</text>
+          <text x="150" y="138" font-size="12.5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#14181d">D KWAN</text>
+          <text x="16" y="166" font-size="12.5" fill="#5c6773">BSB / Account:</text>
+          <rect x="150" y="153" width="172" height="17" fill="#14181d"/>
+          <text x="16" y="194" font-size="12.5" fill="#5c6773">Tax file number:</text>
+          <rect x="150" y="181" width="124" height="17" fill="#14181d"/>
+          <text x="16" y="222" font-size="12.5" fill="#3c464f">Prepared 12 June 2026</text>
+          <path d="M236 204 V292" stroke="#b9c3cc" stroke-width="1.5" stroke-dasharray="4 4" fill="none"/>
+          <path d="M231 288 L236 296 L241 288 Z" fill="#b9c3cc"/>
+          <rect x="0.5" y="296.5" width="439" height="64" rx="4" fill="#fbeeec" stroke="#a1231b" stroke-width="2"/>
+          <text x="16" y="320" font-size="11" font-weight="700" letter-spacing=".5" fill="#a1231b">SELECT, COPY, PASTE &#8594;</text>
+          <text x="16" y="345" font-size="14" font-weight="700" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#a1231b">062-000 1234 5678</text>
+          <text x="0" y="384" font-size="11" fill="#5c6773">The bar is decoration. The text is still in the file.</text>
           <!-- transformation arrow -->
-          <path d="M468 219 H524" stroke="#0f4c81" stroke-width="5" fill="none"/>
-          <path d="M522 208 L540 219 L522 230 Z" fill="#0f4c81"/>
-          <!-- WHAT YOU GET: the spreadsheet -->
-          <text x="548" y="16" font-size="12" font-weight="700" letter-spacing="1.2" fill="#5c6773">WHAT YOU GET</text>
-          <rect x="548.5" y="26.5" width="451" height="385" fill="#ffffff" stroke="#b9c3cc"/>
-          <rect x="548.5" y="26.5" width="451" height="30" fill="#0f4c81"/>
-          <text x="558" y="46" font-size="11" font-weight="700" text-anchor="start" fill="#ffffff">Date</text>
-          <text x="630" y="46" font-size="11" font-weight="700" text-anchor="start" fill="#ffffff">Description</text>
-          <text x="911" y="46" font-size="11" font-weight="700" text-anchor="end" fill="#ffffff">Amount</text>
-          <text x="992" y="46" font-size="11" font-weight="700" text-anchor="end" fill="#ffffff">Balance</text>
-          <text x="558" y="71.8" font-size="10.5" fill="#3c464f">01/07/25</text>
-          <text x="630" y="71.8" font-size="10.5" fill="#14181d">Woolworths Newtown</text>
-          <text x="911" y="71.8" font-size="10.5" text-anchor="end" fill="#a1231b">-84.20</text>
-          <text x="992" y="71.8" font-size="10.5" text-anchor="end" fill="#3c464f">2,140.55</text>
-          <rect x="549" y="79.7" width="450" height="23.7" fill="#f4f6f8"/>
-          <text x="558" y="95.5" font-size="10.5" fill="#3c464f">02/07/25</text>
-          <text x="630" y="95.5" font-size="10.5" fill="#14181d">Origin Energy</text>
-          <text x="911" y="95.5" font-size="10.5" text-anchor="end" fill="#a1231b">-212.85</text>
-          <text x="992" y="95.5" font-size="10.5" text-anchor="end" fill="#3c464f">1,927.70</text>
-          <text x="558" y="119.3" font-size="10.5" fill="#3c464f">03/07/25</text>
-          <text x="630" y="119.3" font-size="10.5" fill="#14181d">Harper &amp; Co - invoice 10428</text>
-          <text x="911" y="119.3" font-size="10.5" text-anchor="end" fill="#14181d">1,650.00</text>
-          <text x="992" y="119.3" font-size="10.5" text-anchor="end" fill="#3c464f">3,577.70</text>
-          <rect x="549" y="127.2" width="450" height="23.7" fill="#f4f6f8"/>
-          <text x="558" y="143.0" font-size="10.5" fill="#3c464f">05/07/25</text>
-          <text x="630" y="143.0" font-size="10.5" fill="#14181d">Officeworks Alexandria</text>
-          <text x="911" y="143.0" font-size="10.5" text-anchor="end" fill="#a1231b">-139.95</text>
-          <text x="992" y="143.0" font-size="10.5" text-anchor="end" fill="#3c464f">3,437.75</text>
-          <text x="558" y="166.7" font-size="10.5" fill="#3c464f">08/07/25</text>
-          <text x="630" y="166.7" font-size="10.5" fill="#14181d">ATO activity statement</text>
-          <text x="911" y="166.7" font-size="10.5" text-anchor="end" fill="#a1231b">-1,284.00</text>
-          <text x="992" y="166.7" font-size="10.5" text-anchor="end" fill="#3c464f">2,153.75</text>
-          <rect x="549" y="174.7" width="450" height="23.7" fill="#f4f6f8"/>
-          <text x="558" y="190.5" font-size="10.5" fill="#3c464f">09/07/25</text>
-          <text x="630" y="190.5" font-size="10.5" fill="#14181d">Caltex Marrickville</text>
-          <text x="911" y="190.5" font-size="10.5" text-anchor="end" fill="#a1231b">-76.40</text>
-          <text x="992" y="190.5" font-size="10.5" text-anchor="end" fill="#3c464f">2,077.35</text>
-          <text x="558" y="214.2" font-size="10.5" fill="#3c464f">11/07/25</text>
-          <text x="630" y="214.2" font-size="10.5" fill="#14181d">Telstra</text>
-          <text x="911" y="214.2" font-size="10.5" text-anchor="end" fill="#a1231b">-99.00</text>
-          <text x="992" y="214.2" font-size="10.5" text-anchor="end" fill="#3c464f">1,978.35</text>
-          <rect x="549" y="222.1" width="450" height="23.7" fill="#f4f6f8"/>
-          <text x="558" y="237.9" font-size="10.5" fill="#3c464f">12/07/25</text>
-          <text x="630" y="237.9" font-size="10.5" fill="#14181d">Delaney Trust - invoice 10431</text>
-          <text x="911" y="237.9" font-size="10.5" text-anchor="end" fill="#14181d">2,420.00</text>
-          <text x="992" y="237.9" font-size="10.5" text-anchor="end" fill="#3c464f">4,398.35</text>
-          <text x="558" y="261.7" font-size="10.5" fill="#3c464f">15/07/25</text>
-          <text x="630" y="261.7" font-size="10.5" fill="#14181d">Payrun - staff wages</text>
-          <text x="911" y="261.7" font-size="10.5" text-anchor="end" fill="#a1231b">-3,180.60</text>
-          <text x="992" y="261.7" font-size="10.5" text-anchor="end" fill="#3c464f">1,217.75</text>
-          <rect x="549" y="269.6" width="450" height="23.7" fill="#f4f6f8"/>
-          <text x="558" y="285.4" font-size="10.5" fill="#3c464f">16/07/25</text>
-          <text x="630" y="285.4" font-size="10.5" fill="#14181d">Xero subscription</text>
-          <text x="911" y="285.4" font-size="10.5" text-anchor="end" fill="#a1231b">-78.00</text>
-          <text x="992" y="285.4" font-size="10.5" text-anchor="end" fill="#3c464f">1,139.75</text>
-          <text x="558" y="309.1" font-size="10.5" fill="#3c464f">18/07/25</text>
-          <text x="630" y="309.1" font-size="10.5" fill="#14181d">Woolworths Newtown</text>
-          <text x="911" y="309.1" font-size="10.5" text-anchor="end" fill="#a1231b">-62.15</text>
-          <text x="992" y="309.1" font-size="10.5" text-anchor="end" fill="#3c464f">1,077.60</text>
-          <rect x="549" y="317.1" width="450" height="23.7" fill="#f4f6f8"/>
-          <text x="558" y="332.9" font-size="10.5" fill="#3c464f">22/07/25</text>
-          <text x="630" y="332.9" font-size="10.5" fill="#14181d">Morelli Pty Ltd - invoice 10433</text>
-          <text x="911" y="332.9" font-size="10.5" text-anchor="end" fill="#14181d">3,300.00</text>
-          <text x="992" y="332.9" font-size="10.5" text-anchor="end" fill="#3c464f">4,377.60</text>
-          <text x="558" y="356.6" font-size="10.5" fill="#3c464f">24/07/25</text>
-          <text x="630" y="356.6" font-size="10.5" fill="#14181d">AMP Insurance</text>
-          <text x="911" y="356.6" font-size="10.5" text-anchor="end" fill="#a1231b">-184.30</text>
-          <text x="992" y="356.6" font-size="10.5" text-anchor="end" fill="#3c464f">4,193.30</text>
-          <rect x="549" y="364.5" width="450" height="23.7" fill="#f4f6f8"/>
-          <text x="558" y="380.3" font-size="10.5" fill="#3c464f">28/07/25</text>
-          <text x="630" y="380.3" font-size="10.5" fill="#14181d">Officeworks Alexandria</text>
-          <text x="911" y="380.3" font-size="10.5" text-anchor="end" fill="#a1231b">-47.80</text>
-          <text x="992" y="380.3" font-size="10.5" text-anchor="end" fill="#3c464f">4,145.50</text>
-          <text x="558" y="404.1" font-size="10.5" fill="#3c464f">31/07/25</text>
-          <text x="630" y="404.1" font-size="10.5" fill="#14181d">Account service fee</text>
-          <text x="911" y="404.1" font-size="10.5" text-anchor="end" fill="#a1231b">-10.00</text>
-          <text x="992" y="404.1" font-size="10.5" text-anchor="end" fill="#3c464f">4,135.50</text>
-          <g stroke="#d8dee4" stroke-width="1">
-            <path d="M549 79.7 H999"/>
-            <path d="M549 103.5 H999"/>
-            <path d="M549 127.2 H999"/>
-            <path d="M549 150.9 H999"/>
-            <path d="M549 174.7 H999"/>
-            <path d="M549 198.4 H999"/>
-            <path d="M549 222.1 H999"/>
-            <path d="M549 245.9 H999"/>
-            <path d="M549 269.6 H999"/>
-            <path d="M549 293.3 H999"/>
-            <path d="M549 317.1 H999"/>
-            <path d="M549 340.8 H999"/>
-            <path d="M549 364.5 H999"/>
-            <path d="M549 388.3 H999"/>
-            <path d="M620.5 56 V411"/>
-            <path d="M838.5 56 V411"/>
-            <path d="M919.5 56 V411"/>
-          </g>
-          <rect x="548.5" y="26.5" width="451" height="385" fill="none" stroke="#b9c3cc"/>
+          <path d="M466 190 H524" stroke="#0f4c81" stroke-width="5" fill="none"/>
+          <path d="M522 179 L540 190 L522 201 Z" fill="#0f4c81"/>
+          <!-- PROPERLY REDACTED -->
+          <text x="560" y="15" font-size="12" font-weight="700" letter-spacing="1.2" fill="#5c6773">PROPERLY REDACTED</text>
+          <rect x="560.5" y="26.5" width="439" height="228" fill="#ffffff" stroke="#b9c3cc"/>
+          <rect x="560.5" y="26.5" width="439" height="30" fill="#eef1f4" stroke="#b9c3cc"/>
+          <text x="576" y="46" font-size="11" font-weight="700" letter-spacing="1" fill="#14181d">STATEMENT OF ACCOUNT</text>
+          <text x="576" y="82" font-size="12.5" fill="#3c464f">Ms Danielle Kwan</text>
+          <text x="576" y="110" font-size="12.5" fill="#3c464f">14 Rosslyn Street, Fitzroy VIC 3065</text>
+          <text x="576" y="138" font-size="12.5" fill="#5c6773">Account name:</text>
+          <text x="710" y="138" font-size="12.5" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#14181d">D KWAN</text>
+          <text x="576" y="166" font-size="12.5" fill="#5c6773">BSB / Account:</text>
+          <rect x="710" y="153" width="172" height="17" fill="#14181d"/>
+          <text x="576" y="194" font-size="12.5" fill="#5c6773">Tax file number:</text>
+          <rect x="710" y="181" width="124" height="17" fill="#14181d"/>
+          <text x="576" y="222" font-size="12.5" fill="#3c464f">Prepared 12 June 2026</text>
+          <path d="M796 204 V292" stroke="#b9c3cc" stroke-width="1.5" stroke-dasharray="4 4" fill="none"/>
+          <path d="M791 288 L796 296 L801 288 Z" fill="#b9c3cc"/>
+          <rect x="560.5" y="296.5" width="439" height="64" rx="4" fill="#eaf1f7" stroke="#0f4c81" stroke-width="2"/>
+          <text x="576" y="320" font-size="11" font-weight="700" letter-spacing=".5" fill="#0f4c81">SELECT, COPY, PASTE &#8594;</text>
+          <text x="576" y="345" font-size="14" font-weight="700" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" fill="#0f4c81">(no text found)</text>
+          <text x="560" y="384" font-size="11" fill="#5c6773">Text removed from the file. Metadata stripped.</text>
         </svg>
         </div>
         <figcaption>
-          An illustration of the intended output, not a screenshot of a working
-          product. Being built for CBA, Westpac, NAB and ANZ statement formats,
-          with the columns mapped to what Xero and MYOB expect on import.
+          An illustration of the intended behaviour, not a screenshot of a
+          working product. It removes the underlying text and the document
+          metadata rather than covering them over, and is being built for the
+          PDFs you actually get — scanned, exported from other software, and
+          generated.
         </figcaption>
       </figure>
 
@@ -463,34 +407,34 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="qs">
 
         <div>
-          <h3>Will it actually read my clients' statements properly?</h3>
+          <h3>How is this different from drawing a black box in Acrobat?</h3>
           <p>
-            That is the whole product, and it's why we aren't taking payment yet.
-            It's being built against real CBA, Westpac, NAB and ANZ layouts —
-            including the multi-page ones where the balance column drifts halfway
-            down and long descriptions wrap onto a second line. If it can't be
-            trusted line for line, it isn't worth selling to a bookkeeper.
+            A black box and the highlight tool both leave the original text
+            sitting in the file underneath. Acrobat's actual redaction feature
+            is buried, and it's common to apply the mark and never apply the
+            redaction — which looks identical on screen. This removes the text,
+            the image data underneath it, and the document metadata, so there
+            is nothing left to recover.
           </p>
         </div>
 
         <div>
-          <h3>What happens to my clients' financial data?</h3>
+          <h3>What happens to my documents?</h3>
           <p>
             Nothing goes anywhere today. There is no upload on this page, and no
-            way to send us a statement even if you wanted to. We won't ask you
-            for a client statement until the product is live and you've read how
-            files are handled. The only thing collected right now is an email
-            address.
+            way to send us a document even if you wanted to. We won't ask you
+            for one until the product is live and you've read exactly how files
+            are handled. The only thing collected right now is an email address.
           </p>
         </div>
 
         <div>
-          <h3>It isn't finished, so what am I actually signing up for?</h3>
+          <h3>It isn't finished, so what am I signing up for?</h3>
           <p>
             A place in the first group of accounts, and the price above held for
             twelve months from the day you get access. You're not paying, not
-            committing to anything, and not being added to a marketing list. If
-            you've changed your mind by the time our email arrives, ignore it.
+            committing to anything, and not joining a marketing list. If you
+            don't want it by the time our email arrives, ignore it.
           </p>
         </div>
 
@@ -502,45 +446,45 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <section id="pricing" class="alt">
     <div class="wrap">
       <h2>Early access pricing</h2>
-      <p>Choose the plan that matches your client load. No payment is taken today.</p>
+      <p>Choose the plan that matches your workload. No payment is taken today.</p>
 
       <div class="tiers">
 
         <div class="tier">
           <h3>Solo</h3>
-          <p class="price"><b>$49</b><span>/month AUD</span></p>
-          <p class="who">For a bookkeeper with a handful of clients.</p>
+          <p class="price"><b>$29</b><span>/month AUD</span></p>
+          <p class="who">For an individual professional.</p>
           <ul>
-            <li>Up to 200 pages a month</li>
+            <li>100 pages a month</li>
             <li>1 user</li>
-            <li>Xero- and MYOB-ready CSV</li>
+            <li>Text and metadata removed, not covered</li>
           </ul>
-          <button class="btn btn--block" type="button" data-plan="Solo" data-price="$49/month">Get early access</button>
+          <button class="btn btn--block" type="button" data-plan="Solo" data-price="$29/month">Get early access</button>
         </div>
 
         <div class="tier tier--featured">
           <span class="badge">Most popular</span>
           <h3>Practice</h3>
-          <p class="price"><b>$129</b><span>/month AUD</span></p>
-          <p class="who">For a small practice running a full client book.</p>
+          <p class="price"><b>$79</b><span>/month AUD</span></p>
+          <p class="who">For a small team handling documents every week.</p>
           <ul>
-            <li>Up to 1,000 pages a month</li>
+            <li>500 pages a month</li>
             <li>3 users</li>
-            <li>Xero- and MYOB-ready CSV</li>
+            <li>Saved redaction patterns</li>
           </ul>
-          <button class="btn btn--block" type="button" data-plan="Practice" data-price="$129/month">Get early access</button>
+          <button class="btn btn--block" type="button" data-plan="Practice" data-price="$79/month">Get early access</button>
         </div>
 
         <div class="tier">
           <h3>Firm</h3>
-          <p class="price"><b>$399</b><span>/month AUD</span></p>
-          <p class="who">For a firm with a team and a heavy statement load.</p>
+          <p class="price"><b>$199</b><span>/month AUD</span></p>
+          <p class="who">For a firm that has to show its working.</p>
           <ul>
             <li>Unlimited pages</li>
             <li>10 users</li>
-            <li>Priority support</li>
+            <li>Audit log and redaction record</li>
           </ul>
-          <button class="btn btn--block" type="button" data-plan="Firm" data-price="$399/month">Get early access</button>
+          <button class="btn btn--block" type="button" data-plan="Firm" data-price="$199/month">Get early access</button>
         </div>
 
       </div>
@@ -558,8 +502,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- ============ 4. FOOTER ============ -->
 <footer>
   <div class="wrap">
-    <p class="name">StatementSheet</p>
-    <p>StatementSheet is in development and is not yet available to use.</p>
+    <p class="name">RedactReady</p>
+    <p>RedactReady is in development and is not yet available to use.</p>
 
     <div class="legal">
       <p>
@@ -584,7 +528,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="overlay" id="overlay" hidden>
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" id="modal">
 
-    <!-- Step two: volume + email capture -->
+    <!-- Step two: qualifier + email capture -->
     <div id="captureView">
       <button class="close" type="button" id="closeBtn" aria-label="Close">&times;</button>
       <h2 id="modalTitle">Save your spot</h2>
@@ -601,28 +545,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <form id="signupForm" novalidate>
 
         <div class="field">
-          <span class="grp-label" id="volLabel">How many client bank statements a month?</span>
-          <div class="vol-opts" role="group" aria-labelledby="volLabel" id="volGroup">
-            <button class="vol" type="button" data-volume="1-20"   aria-pressed="false">1&ndash;20</button>
-            <button class="vol" type="button" data-volume="21-100" aria-pressed="false">21&ndash;100</button>
-            <button class="vol" type="button" data-volume="101-500" aria-pressed="false">101&ndash;500</button>
-            <button class="vol" type="button" data-volume="500+"   aria-pressed="false">500+</button>
+          <span class="grp-label" id="roleLabel">What do you mainly redact?</span>
+          <div class="role-opts" role="group" aria-labelledby="roleLabel" id="roleGroup">
+            <button class="role" type="button" data-role="Legal documents"      aria-pressed="false">Legal documents</button>
+            <button class="role" type="button" data-role="Financial records"    aria-pressed="false">Financial records</button>
+            <button class="role" type="button" data-role="HR or personnel files" aria-pressed="false">HR or personnel files</button>
+            <button class="role" type="button" data-role="Government / FOI"     aria-pressed="false">Government / FOI</button>
+            <button class="role" type="button" data-role="Something else"       aria-pressed="false">Something else</button>
           </div>
-          <p class="err" id="volumeError" role="alert"></p>
+          <p class="err" id="roleError" role="alert"></p>
         </div>
 
         <div class="field">
           <label for="email">Your email address</label>
           <input type="email" id="email" name="email" autocomplete="email"
                  inputmode="email" spellcheck="false"
-                 aria-describedby="emailMicro" placeholder="you@yourpractice.com.au">
+                 aria-describedby="emailMicro" placeholder="you@yourfirm.com.au">
           <p class="err" id="emailError" role="alert"></p>
         </div>
 
         <p class="micro" id="emailMicro">
           We're opening access in batches and will email you when your spot is
-          ready. There is no payment now. We will never ask you to upload client
-          statements until the product is live.
+          ready. There is no payment now. We will never ask you to upload a
+          document until the product is live.
         </p>
 
         <button class="btn btn--block" type="submit" id="submitBtn">Save my spot</button>
@@ -661,9 +606,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   var captureView  = document.getElementById('captureView');
   var confirmView  = document.getElementById('confirmView');
   var form         = document.getElementById('signupForm');
-  var volGroup     = document.getElementById('volGroup');
-  var volButtons   = volGroup.querySelectorAll('[data-volume]');
-  var volumeError  = document.getElementById('volumeError');
+  var roleGroup    = document.getElementById('roleGroup');
+  var roleButtons  = roleGroup.querySelectorAll('[data-role]');
+  var roleError    = document.getElementById('roleError');
   var emailInput   = document.getElementById('email');
   var emailError   = document.getElementById('emailError');
   var submitBtn    = document.getElementById('submitBtn');
@@ -674,17 +619,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   var confirmTitle = document.getElementById('confirmTitle');
 
   var selectedPlan = '';
-  var selectedVolume = '';
+  var selectedRole = '';
   var lastFocused = null;
 
   /* ---------- modal open / close ---------- */
 
-  function resetVolume() {
-    selectedVolume = '';
-    Array.prototype.forEach.call(volButtons, function (b) {
+  function resetRole() {
+    selectedRole = '';
+    Array.prototype.forEach.call(roleButtons, function (b) {
       b.setAttribute('aria-pressed', 'false');
     });
-    clearVolumeError();
+    clearRoleError();
   }
 
   function openModal(plan, price, trigger) {
@@ -695,17 +640,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     planPrice.textContent = price ? '— ' + price : '';
     confirmPlan.textContent = plan;
 
-    /* Reopening always starts clean, including the volume selection. */
+    /* Reopening always starts clean, including the role selection. */
     captureView.hidden = false;
     confirmView.hidden = true;
-    resetVolume();
+    resetRole();
     clearEmailError();
     submitBtn.disabled = false;
     submitBtn.textContent = 'Save my spot';
 
     overlay.hidden = false;
     document.body.style.overflow = 'hidden';
-    volButtons[0].focus();
+    roleButtons[0].focus();
   }
 
   function closeModal() {
@@ -771,27 +716,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     });
   });
 
-  /* ---------- volume: exclusive single-select ---------- */
+  /* ---------- role: exclusive single-select ---------- */
 
-  Array.prototype.forEach.call(volButtons, function (btn) {
+  Array.prototype.forEach.call(roleButtons, function (btn) {
     btn.addEventListener('click', function () {
-      selectedVolume = btn.getAttribute('data-volume');
-      Array.prototype.forEach.call(volButtons, function (b) {
+      selectedRole = btn.getAttribute('data-role');
+      Array.prototype.forEach.call(roleButtons, function (b) {
         b.setAttribute('aria-pressed', String(b === btn));
       });
-      clearVolumeError();
+      clearRoleError();
     });
   });
 
-  function showVolumeError() {
-    volumeError.textContent = 'Please pick a range so we know which group to put you in.';
-    volGroup.setAttribute('data-invalid', 'true');
-    volButtons[0].focus();
+  function showRoleError() {
+    roleError.textContent = 'Please pick one so we know which group to put you in.';
+    roleGroup.setAttribute('data-invalid', 'true');
+    roleButtons[0].focus();
   }
 
-  function clearVolumeError() {
-    volumeError.textContent = '';
-    volGroup.removeAttribute('data-invalid');
+  function clearRoleError() {
+    roleError.textContent = '';
+    roleGroup.removeAttribute('data-invalid');
   }
 
   /* ---------- email validation ---------- */
@@ -818,9 +763,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   form.addEventListener('submit', function (e) {
     e.preventDefault();
 
-    /* Volume is validated first — it sits above the email field. */
-    if (!selectedVolume) {
-      showVolumeError();
+    /* The qualifier is validated first — it sits above the email field. */
+    if (!selectedRole) {
+      showRoleError();
       return;
     }
 
@@ -839,14 +784,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     submitBtn.disabled = true;
     submitBtn.textContent = 'Saving…';
 
-    /* One submission carrying email, plan and volume together. */
+    /* One submission carrying email, plan and role together. */
     fetch(FORMSPREE_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({
         email: value,
         plan: selectedPlan,
-        monthly_statement_volume: selectedVolume
+        redaction_role: selectedRole
       })
     })
       .then(function (res) {
@@ -860,7 +805,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         window.dataLayer.push({
           event: 'signup_success',
           plan: selectedPlan,
-          volume: selectedVolume
+          role: selectedRole
         });
 
         confirmEmail.textContent = value;
